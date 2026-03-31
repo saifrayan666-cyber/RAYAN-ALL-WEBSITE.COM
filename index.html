@@ -169,8 +169,18 @@ Total: 0 | Valid: 0 | Invalid: 0
 <label>Month</label>
 <select id="month"></select>
 
+<label style="display:flex;align-items:center;gap:6px;">
+<input type="checkbox" id="randomMonth">
+<span>Click and Randomize Gen</span>
+</label>
+
 <label>Year</label>
 <select id="year"></select>
+
+<label style="display:flex;align-items:center;gap:6px;">
+<input type="checkbox" id="randomYear">
+<span>Click and Randomize Gen</span>
+</label>
 
 <label>Quantity</label>
 <input id="qty" value="10">
@@ -226,6 +236,7 @@ Total: 0 | Valid: 0 | Invalid: 0
 <button class="btn" onclick="downloadFile('boost.txt')">Boost Extractor Link</button>
 <button class="btn" onclick="downloadFile('remove.txt')">Remove Verify</button>
 
+
 <button class="btn" onclick="closeImportantTools()">Close</button>
 
 <div class="popup-footer">
@@ -245,6 +256,15 @@ document.getElementById("month").innerHTML+=`<option>${i.toString().padStart(2,'
 }
 for(let i=25;i<=99;i++){
 document.getElementById("year").innerHTML+=`<option>${i}</option>`;
+}
+
+function luhnCheck(num){
+let arr=num.split('').reverse().map(x=>parseInt(x));
+let sum=arr.reduce((acc,val,i)=>{
+if(i%2!==0){val*=2;if(val>9)val-=9;}
+return acc+val;
+},0);
+return sum%10===0;
 }
 
 /* PROCESS FIXED */
@@ -316,24 +336,38 @@ function closePopup(){document.getElementById("popup").style.display="none";}
 function generate(){
 
 let bin=document.getElementById("bin").value;
-let mm=document.getElementById("month").value;
-let yy=document.getElementById("year").value;
 let qty=parseInt(document.getElementById("qty").value);
 
 let result=[];
 
-for(let i=0;i<qty;i++){
+while(result.length<qty){
+
+let mm=document.getElementById("randomMonth").checked
+? String(Math.floor(Math.random()*12)+1).padStart(2,'0')
+: document.getElementById("month").value;
+
+let yy=document.getElementById("randomYear").checked
+? String(Math.floor(Math.random()*75)+25)
+: document.getElementById("year").value;
 
 let rand="";
 let remain=16-bin.length;
 
-for(let j=0;j<remain;j++){
+for(let j=0;j<remain-1;j++){
 rand+=Math.floor(Math.random()*10);
 }
 
-let cvv=Math.floor(100+Math.random()*900);
+let partial=bin+rand;
 
-result.push(`${bin}${rand}|${mm}|${yy}|${cvv}`);
+for(let i=0;i<10;i++){
+let card=partial+i;
+if(luhnCheck(card)){
+let cvv=Math.floor(100+Math.random()*900);
+result.push(`${card}|${mm}|${yy}|${cvv}`);
+break;
+}
+}
+
 }
 
 document.getElementById("genOutput").value=result.join("\n");
