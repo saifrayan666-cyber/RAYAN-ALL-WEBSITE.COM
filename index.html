@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>THIS PERSON IS BRAND</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { 
@@ -12,7 +13,6 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-        
         .bg-animation {
             position: fixed;
             top: 0;
@@ -39,7 +39,6 @@
             0% { transform: rotate(0deg) translate(0, 0); }
             100% { transform: rotate(360deg) translate(50px, 50px); }
         }
-
         .particles {
             position: fixed;
             top: 0;
@@ -64,7 +63,6 @@
             90% { opacity: 1; }
             100% { transform: translateY(-10vh) scale(1); opacity: 0; }
         }
-
         .header { 
             text-align: center; 
             padding: 25px 20px; 
@@ -98,7 +96,6 @@
             letter-spacing: 3px;
             text-transform: uppercase;
         }
-
         .container { 
             width: 95%; 
             max-width: 1200px;
@@ -112,7 +109,6 @@
             position: relative;
             z-index: 1;
         }
-
         textarea { 
             width: 100%; 
             height: 200px; 
@@ -131,7 +127,6 @@
             outline: none; 
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.08), inset 0 0 30px rgba(0, 255, 255, 0.03);
         }
-
         .btn { 
             padding: 12px 25px; 
             margin: 8px 6px; 
@@ -157,24 +152,17 @@
             opacity: 0;
             transition: 0.5s;
         }
-        .btn:hover::after {
-            opacity: 1;
-        }
-        .btn:hover { 
-            transform: translateY(-3px) scale(1.02); 
-            box-shadow: 0 10px 35px rgba(255, 0, 204, 0.3); 
-        }
+        .btn:hover::after { opacity: 1; }
+        .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 10px 35px rgba(255, 0, 204, 0.3); }
         .btn:active { transform: scale(0.95); }
         .btn-primary { background: linear-gradient(135deg, #00d2ff, #3a7bd5); }
         .btn-success { background: linear-gradient(135deg, #00b894, #00cec9); }
         .btn-warning { background: linear-gradient(135deg, #fdcb6e, #f39c12); }
         .btn-danger { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-
         .result { max-height: 300px; overflow: auto; margin-top: 15px; }
         .result::-webkit-scrollbar { width: 6px; }
         .result::-webkit-scrollbar-track { background: #0d0d0d; border-radius: 3px; }
         .result::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ff00cc, #00ffff); border-radius: 3px; }
-
         .card { 
             display: flex; 
             justify-content: space-between; 
@@ -204,15 +192,11 @@
             font-size: 14px; 
             color: #00ff88; 
         }
-
         .card-invalid {
             border-left-color: #ff6b6b;
             opacity: 0.8;
         }
-        .card-invalid span {
-            color: #ff6b6b;
-        }
-
+        .card-invalid span { color: #ff6b6b; }
         .copy { 
             background: linear-gradient(135deg, #00b894, #00cec9); 
             border: none; 
@@ -223,13 +207,10 @@
             font-weight: bold; 
             font-size: 12px;
             transition: 0.3s; 
+            flex-shrink: 0;
         }
-        .copy:hover { 
-            transform: scale(1.05); 
-            box-shadow: 0 0 30px rgba(0, 206, 201, 0.4); 
-        }
+        .copy:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 206, 201, 0.4); }
         .copy:active { transform: scale(0.9); }
-
         .footer { 
             display: flex;
             flex-direction: column;
@@ -259,13 +240,8 @@
             color: #555;
             text-align: center;
         }
-        .footer-details span {
-            color: #666;
-        }
-        .footer-details .highlight {
-            color: #00ff88;
-        }
-
+        .footer-details span { color: #666; }
+        .footer-details .highlight { color: #00ff88; }
         .popup { 
             display: none; 
             position: fixed; 
@@ -288,9 +264,9 @@
             background: linear-gradient(145deg, #0f172a, #1a1a3e); 
             padding: 30px; 
             border-radius: 25px; 
-            width: 96%;
-            max-width: 1200px;
-            max-height: 92vh; 
+            width: 98%;
+            max-width: 1300px;
+            max-height: 95vh; 
             overflow-y: auto; 
             box-shadow: 0 0 80px rgba(0, 255, 255, 0.15), inset 0 1px 0 rgba(255,255,255,0.05); 
             border: 1px solid rgba(0, 255, 255, 0.15);
@@ -342,15 +318,6 @@
             outline: none; 
             box-shadow: 0 0 30px rgba(0, 255, 255, 0.08); 
         }
-        .popup-box textarea { 
-            height: 380px; 
-            font-family: 'Courier New', monospace; 
-            line-height: 2.2;
-            font-size: 15px;
-            resize: vertical;
-            font-weight: bold;
-            color: #00ff88;
-        }
         .popup-footer { 
             display: flex; 
             justify-content: center; 
@@ -384,7 +351,6 @@
             color: #ccc; 
             font-weight: normal;
         }
-
         #counter { 
             text-align: right; 
             margin-top: 12px; 
@@ -400,10 +366,8 @@
         }
         #counter span { color: #00ff88; font-weight: bold; }
         #counter .invalid-count { color: #ff6b6b; }
-
         .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
         .btn-group .btn { flex: 1; min-width: 100px; }
-
         .year-limit-info { 
             color: #00ff88; 
             font-size: 12px; 
@@ -415,7 +379,6 @@
             border-left: 3px solid #00ff88; 
             font-weight: bold;
         }
-
         .status-bar {
             display: flex;
             justify-content: space-between;
@@ -424,7 +387,6 @@
             gap: 10px;
             margin-top: 8px;
         }
-
         .toast {
             position: fixed;
             bottom: 30px;
@@ -446,10 +408,7 @@
             opacity: 1;
             transform: translateX(-50%) translateY(0);
         }
-        .toast .toast-icon {
-            margin-right: 10px;
-        }
-
+        .toast .toast-icon { margin-right: 10px; }
         .file-upload-area {
             display: flex;
             flex-wrap: wrap;
@@ -457,9 +416,7 @@
             align-items: center;
             padding: 10px 0;
         }
-        .file-upload-area input[type="file"] {
-            display: none;
-        }
+        .file-upload-area input[type="file"] { display: none; }
         .file-label {
             padding: 10px 20px;
             background: linear-gradient(135deg, #6c5ce7, #a29bfe);
@@ -481,7 +438,6 @@
             background: rgba(255,255,255,0.05);
             border-radius: 8px;
         }
-
         .generator-layout {
             display: flex;
             gap: 30px;
@@ -494,9 +450,8 @@
         }
         .generator-right {
             flex: 2;
-            min-width: 350px;
+            min-width: 400px;
         }
-
         .invalid-section {
             margin-top: 20px;
             border-top: 2px solid rgba(255, 107, 107, 0.25);
@@ -540,7 +495,6 @@
             transform: scale(1.05);
             box-shadow: 0 0 20px rgba(0, 206, 201, 0.4);
         }
-
         .drag-drop-area {
             border: 2px dashed rgba(0, 255, 255, 0.2);
             border-radius: 12px;
@@ -559,18 +513,130 @@
             border-color: cyan;
             background: rgba(0, 255, 255, 0.08);
         }
-
+        .test-card-badge {
+            display: inline-block;
+            background: rgba(0, 255, 136, 0.15);
+            color: #00ff88;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 8px;
+        }
+        .bin-preset {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+        .bin-preset button {
+            padding: 4px 12px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            border-radius: 6px;
+            background: rgba(0, 255, 255, 0.05);
+            color: #aaa;
+            cursor: pointer;
+            font-size: 11px;
+            transition: 0.3s;
+        }
+        .bin-preset button:hover {
+            border-color: cyan;
+            color: #fff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+        .gen-card-item {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(17, 17, 17, 0.8);
+            margin: 3px 0;
+            padding: 6px 12px;
+            border-left: 3px solid #00ff88;
+            border-radius: 6px;
+            align-items: center;
+        }
+        .gen-card-item span {
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #00ff88;
+            word-break: break-all;
+        }
+        .gen-card-item .copy-small {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            border: none;
+            padding: 2px 10px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 10px;
+            transition: 0.3s;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+        .gen-card-item .copy-small:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 206, 201, 0.4);
+        }
+        .gen-output-container {
+            max-height: 420px;
+            overflow-y: auto;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            padding: 5px 10px;
+            margin-bottom: 10px;
+        }
+        .gen-output-container::-webkit-scrollbar {
+            width: 5px;
+        }
+        .gen-output-container::-webkit-scrollbar-track {
+            background: #0d0d0d;
+            border-radius: 3px;
+        }
+        .gen-output-container::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff00cc, #00ffff);
+            border-radius: 3px;
+        }
+        .cvv-option {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .cvv-option label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: normal;
+            color: #aaa;
+            cursor: pointer;
+        }
+        .cvv-option input[type="radio"] {
+            width: 16px;
+            height: 16px;
+            accent-color: cyan;
+            cursor: pointer;
+            margin: 0;
+        }
+        .year-select-wrapper {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        .year-select-wrapper select {
+            flex: 1;
+        }
         @media (max-width: 600px) { 
             .container { padding: 12px; } 
             .btn { padding: 10px 16px; font-size: 12px; } 
-            .popup-box { padding: 18px; }
+            .popup-box { padding: 18px; max-width: 98%; }
             .header h1 { font-size: 22px; }
             .toast { padding: 12px 20px; font-size: 14px; width: 90%; text-align: center; }
             .generator-layout { flex-direction: column; }
             .generator-left { max-width: 100%; }
             .generator-right { min-width: 100%; }
-            .popup-box textarea { height: 250px; font-size: 13px; }
             .footer-details { gap: 8px; font-size: 11px; }
+            .cvv-option { flex-wrap: wrap; }
+            .year-select-wrapper { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -645,21 +711,30 @@
         <span>📌 <span class="highlight">Card Filter</span> — Smart Extract MM | YY | CVV</span>
         <span>🔍 <span class="highlight">Luhn Validation</span> — Auto Verify Cards</span>
         <span>📁 <span class="highlight">File Upload</span> — TXT / XLSX Support</span>
-        <span>⚡ <span class="highlight">Card Generator</span> — 2026-2034 Valid Years</span>
+        <span>⚡ <span class="highlight">Card Generator</span> — 2026-2099 (Dropdown) • Random 2026-2034</span>
         <span>📋 <span class="highlight">Copy & Download</span> — One Click Export</span>
         <span>🎨 <span class="highlight">Drag & Drop</span> — Easy File Management</span>
     </div>
 </div>
 
-<!-- GENERATOR POPUP -->
+<!-- GENERATOR POPUP - BIGGER -->
 <div class="popup" id="popup">
     <div class="popup-box">
-        <h2>⚡ CARD GENERATOR</h2>
-        <p class="subtitle">Premium Generator • 2026-2034 Only</p>
+        <h2>⚡ CARD GENERATOR <span class="test-card-badge">TEST CARDS</span></h2>
+        <p class="subtitle">Premium Generator • Luhn Valid • Amex Support (15 digit + 4 digit CVV) • Dropdown: 2026-2099 • Random: 2026-2034</p>
 
         <div class="generator-layout">
             <div class="generator-left">
-                <label>🔢 BIN (6+ digits)</label>
+                <label>🔢 BIN (6+ digits) <span style="color:#888;font-weight:normal;font-size:11px;">— or click a preset</span></label>
+                <div class="bin-preset">
+                    <button onclick="setBIN('400895')">Visa (400895)</button>
+                    <button onclick="setBIN('517805')">Master (517805)</button>
+                    <button onclick="setBIN('371654')">Amex (371654)</button>
+                    <button onclick="setBIN('601100')">Discover (601100)</button>
+                    <button onclick="setBIN('358930')">JCB (358930)</button>
+                    <button onclick="setBIN('422222')">Visa (422222)</button>
+                    <button onclick="setBIN('340000')">Amex (340000)</button>
+                </div>
                 <input id="bin" placeholder="e.g. 517805 or 400895" style="font-family:'Courier New',monospace;">
 
                 <div style="display:flex;gap:15px;flex-wrap:wrap;">
@@ -668,7 +743,7 @@
                         <select id="month"></select>
                     </div>
                     <div style="flex:1;min-width:120px;">
-                        <label>📅 Year</label>
+                        <label>📅 Year <span style="color:#888;font-weight:normal;font-size:10px;">(2026-2099)</span></label>
                         <select id="year"></select>
                     </div>
                 </div>
@@ -678,24 +753,33 @@
                     <label for="randomMonth">🎲 Random Month</label>
                 </div>
                 <div class="checkbox-group">
-                    <input type="checkbox" id="randomYear" checked> 
-                    <label for="randomYear">🎲 Random Year (2026-2034 only)</label>
+                    <input type="checkbox" id="randomYear"> 
+                    <label for="randomYear">🎲 Random Year <span style="color:#888;font-size:10px;">(2026-2034 only)</span></label>
                 </div>
-                <div class="year-limit-info">✅ Year limited to 2026-2034 for maximum validity</div>
+
+                <div class="cvv-option">
+                    <label>CVV Length:</label>
+                    <label><input type="radio" name="cvvLen" value="3" checked> 3 Digit</label>
+                    <label><input type="radio" name="cvvLen" value="4"> 4 Digit (Amex)</label>
+                </div>
+
+                <div class="year-limit-info">✅ Dropdown: 2026-2099 | Random: 2026-2034 (max validity)</div>
 
                 <label>📊 Quantity</label>
                 <input id="qty" value="10" type="number" min="1" max="1000">
 
-                <button class="btn" onclick="generate()" style="background:linear-gradient(135deg,#ff00cc,#00ffff);width:100%;padding:14px;font-size:16px;margin:10px 0;">🎲 Generate Cards</button>
+                <button class="btn" onclick="generate()" style="background:linear-gradient(135deg,#ff00cc,#00ffff);width:100%;padding:14px;font-size:16px;margin:10px 0;">🎲 Generate Test Cards</button>
                 
                 <button class="btn btn-danger" onclick="closePopup()" style="width:100%;padding:12px;">❌ Close</button>
             </div>
 
             <div class="generator-right">
-                <label>📋 Generated Output <span style="color:#888;font-weight:normal;font-size:12px;">(bold text • line gap for readability)</span></label>
-                <textarea id="genOutput" placeholder="Generated cards will appear here..." readonly style="height:380px;line-height:2.4;font-weight:bold;color:#00ff88;"></textarea>
+                <label>📋 Generated Output <span style="color:#888;font-weight:normal;font-size:12px;">(All cards are Luhn Valid - Test Cards)</span></label>
+                <div class="gen-output-container" id="genOutputContainer">
+                    <div id="genOutputList"></div>
+                </div>
                 <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
-                    <button class="btn btn-success" onclick="copyGen()" style="flex:1;">📋 Copy Output</button>
+                    <button class="btn btn-success" onclick="copyGen()" style="flex:1;">📋 Copy All</button>
                     <button class="btn btn-primary" onclick="downloadGen()" style="flex:1;">⬇️ Download TXT</button>
                 </div>
             </div>
@@ -710,6 +794,11 @@
 </div>
 
 <script>
+    // ============================================================
+    // COMPLETE JAVASCRIPT - TEST CARD GENERATOR 
+    // Dropdown: 2026-2099 | Random: 2026-2034
+    // ============================================================
+
     // ---- Toast Notification ----
     function showToast(message) {
         const toast = document.getElementById('toast');
@@ -738,7 +827,7 @@
         }
     })();
 
-    // ---- populate month/year ----
+    // ---- populate month/year (Year: 2026-2099) ----
     (function() {
         const monthSel = document.getElementById('month');
         for (let i = 1; i <= 12; i++) {
@@ -746,12 +835,24 @@
             monthSel.innerHTML += `<option value="${val}">${val}</option>`;
         }
         const yearSel = document.getElementById('year');
-        for (let i = 26; i <= 34; i++) {
+        for (let i = 26; i <= 99; i++) {
             yearSel.innerHTML += `<option value="${i}">20${i}</option>`;
         }
     })();
 
-    // ---- Luhn ----
+    // ---- Set BIN Preset ----
+    function setBIN(bin) {
+        document.getElementById('bin').value = bin;
+        if (bin.startsWith('37') || bin.startsWith('34')) {
+            document.querySelector('input[name="cvvLen"][value="4"]').checked = true;
+            showToast('✅ BIN set to ' + bin + ' (Amex - 4 digit CVV)');
+        } else {
+            document.querySelector('input[name="cvvLen"][value="3"]').checked = true;
+            showToast('✅ BIN set to ' + bin);
+        }
+    }
+
+    // ---- Luhn Check ----
     function luhnCheck(num) {
         let arr = num.split('').reverse().map(x => parseInt(x));
         let sum = arr.reduce((acc, val, i) => {
@@ -763,35 +864,38 @@
 
     let finalCards = [];
     let invalidCardsList = [];
+    let generatedCards = [];
 
     // ================ DRAG & DROP ================
     const dropArea = document.getElementById('dropArea');
     const fileInput = document.getElementById('fileInput');
 
-    dropArea.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        this.classList.add('dragover');
-    });
-    dropArea.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        this.classList.remove('dragover');
-    });
-    dropArea.addEventListener('drop', function(e) {
-        e.preventDefault();
-        this.classList.remove('dragover');
-        const files = e.dataTransfer.files;
-        if (files.length > 0) {
-            handleFile(files[0]);
-        }
-    });
-    dropArea.addEventListener('click', function() {
-        fileInput.click();
-    });
-    fileInput.addEventListener('change', function(e) {
-        if (e.target.files.length > 0) {
-            handleFile(e.target.files[0]);
-        }
-    });
+    if (dropArea && fileInput) {
+        dropArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        dropArea.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        dropArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        });
+        dropArea.addEventListener('click', function() {
+            fileInput.click();
+        });
+        fileInput.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) {
+                handleFile(e.target.files[0]);
+            }
+        });
+    }
 
     function handleFile(file) {
         document.getElementById('fileInfo').textContent = '📄 ' + file.name;
@@ -822,7 +926,7 @@
                         showToast('⚠️ No card numbers found in file');
                     }
                 } catch(err) {
-                    showToast('⚠️ Could not parse XLSX file');
+                    showToast('⚠️ Could not parse file');
                 }
             };
             reader.readAsArrayBuffer(file);
@@ -958,7 +1062,7 @@
                         continue;
                     }
                 }
-                if (cvv === null && token.length === 3) {
+                if (cvv === null && (token.length === 3 || token.length === 4)) {
                     cvv = token;
                     continue;
                 }
@@ -966,7 +1070,7 @@
             
             if (mm && yy && !cvv) {
                 for (let i = 0; i < allNums.length; i++) {
-                    if (allNums[i].length === 3 && allNums[i] !== card && allNums[i] !== mm && allNums[i] !== yy) {
+                    if ((allNums[i].length === 3 || allNums[i].length === 4) && allNums[i] !== card && allNums[i] !== mm && allNums[i] !== yy) {
                         cvv = allNums[i];
                         break;
                     }
@@ -978,7 +1082,7 @@
             if (cvv === null) cvv = '000';
             if (parseInt(mm) < 1 || parseInt(mm) > 12) mm = '01';
             if (yy.length !== 2) yy = '00';
-            if (cvv.length !== 3) cvv = '000';
+            if (cvv.length < 3 || cvv.length > 4) cvv = '000';
             
             const formatted = `${card}|${mm}|${yy}|${cvv}`;
             
@@ -1105,6 +1209,10 @@
         const randomYear = document.getElementById("randomYear").checked;
         const monthSel = document.getElementById("month");
         const yearSel = document.getElementById("year");
+        
+        const cvvLen = parseInt(document.querySelector('input[name="cvvLen"]:checked').value);
+        const isAmex = bin.startsWith('37') || bin.startsWith('34');
+        const cardLength = isAmex ? 15 : 16;
 
         const result = [];
         let attempts = 0;
@@ -1121,17 +1229,19 @@
             }
             
             if (randomYear) {
+                // Random Year: 2026-2034 only (26-34)
                 let yearNum = Math.floor(Math.random() * 9) + 26;
                 yy = String(yearNum);
             } else {
+                // Dropdown Year: 2026-2099 (26-99)
                 yy = yearSel.value.slice(-2);
             }
             
             if (parseInt(yy) < 26) yy = '26';
-            if (parseInt(yy) > 34) yy = '34';
+            if (parseInt(yy) > 99) yy = '99';
             
             let prefix = bin;
-            let remaining = 16 - prefix.length;
+            let remaining = cardLength - prefix.length;
             if (remaining < 1) remaining = 1;
             
             let rand = "";
@@ -1143,42 +1253,83 @@
             for (let i = 0; i < 10; i++) {
                 let candidate = partial + i;
                 if (luhnCheck(candidate)) {
-                    let cvv = String(Math.floor(100 + Math.random() * 900));
+                    let cvv;
+                    if (cvvLen === 4) {
+                        cvv = String(Math.floor(1000 + Math.random() * 9000));
+                    } else {
+                        cvv = String(Math.floor(100 + Math.random() * 900));
+                    }
                     result.push(`${candidate}|${mm}|${yy}|${cvv}`);
                     break;
                 }
             }
         }
 
+        generatedCards = result;
+        const container = document.getElementById('genOutputList');
+        container.innerHTML = '';
+
         if (result.length === 0) {
-            document.getElementById("genOutput").value = "⚠️ Could not generate valid cards. Try a different BIN.";
+            container.innerHTML = '<div style="color:#ff6b6b;padding:20px;text-align:center;">⚠️ Could not generate valid cards. Try a different BIN.</div>';
+            showToast('⚠️ Could not generate valid cards');
         } else {
-            document.getElementById("genOutput").value = result.join("\n\n");
-            showToast(`✅ ${result.length} Cards Generated!`);
+            result.forEach(card => {
+                const div = document.createElement('div');
+                div.className = 'gen-card-item';
+                div.innerHTML = `
+                    <span>${card}</span>
+                    <button class="copy-small" onclick="copyGenCard('${card.replace(/'/g, "\\'")}')">📋 Copy</button>
+                `;
+                container.appendChild(div);
+            });
+            const cardType = isAmex ? 'Amex (15 digit)' : 'Standard (16 digit)';
+            const yearType = randomYear ? 'Random (2026-2034)' : 'Dropdown (2026-2099)';
+            showToast(`✅ ${result.length} ${cardType} Test Cards Generated! (${yearType})`);
         }
+    }
+
+    function copyGenCard(card) {
+        navigator.clipboard.writeText(card).then(() => {
+            showToast('✅ Card Copied!');
+        }).catch(() => {
+            const textArea = document.createElement('textarea');
+            textArea.value = card;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('✅ Card Copied!');
+        });
     }
 
     function copyGen() {
-        const val = document.getElementById("genOutput").value;
-        if (val && !val.startsWith("⚠️")) {
-            navigator.clipboard.writeText(val).then(() => {
-                showToast('✅ Generated Cards Copied!');
-            }).catch(() => {});
-        } else {
-            showToast('⚠️ Nothing to copy!');
+        if (!generatedCards.length) {
+            showToast('⚠️ No cards to copy!');
+            return;
         }
+        const text = generatedCards.join("\n");
+        navigator.clipboard.writeText(text).then(() => {
+            showToast('✅ All Generated Cards Copied!');
+        }).catch(() => {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textArea);
+            showToast('✅ All Generated Cards Copied!');
+        });
     }
 
     function downloadGen() {
-        const val = document.getElementById("genOutput").value;
-        if (!val || val.startsWith("⚠️")) {
-            showToast('⚠️ Nothing to download!');
+        if (!generatedCards.length) {
+            showToast('⚠️ No cards to download!');
             return;
         }
-        const blob = new Blob([val], { type: "text/plain" });
+        const blob = new Blob([generatedCards.join("\n")], { type: "text/plain" });
         const a = document.createElement("a");
         a.href = URL.createObjectURL(blob);
-        a.download = "generated_cards.txt";
+        a.download = "test_cards.txt";
         a.click();
         URL.revokeObjectURL(a.href);
         showToast('✅ Downloaded Successfully!');
@@ -1191,6 +1342,9 @@
     document.getElementById("popup").addEventListener('click', function(e) {
         if (e.target === this) closePopup();
     });
+
+    console.log('🔥 THIS PERSON IS BRAND - Test Card Generator Loaded');
+    console.log('📌 Dropdown: 2026-2099 | Random: 2026-2034');
 </script>
 
 </body>
