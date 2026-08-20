@@ -1,485 +1,553 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>THIS PERSON IS BRAND</title>
-
-<style>
-body{margin:0;background:#0a0a0a;color:#fff;font-family:Arial;}
-
-.header{text-align:center;padding:20px;background:#000;}
-.header p{border-bottom:2px solid cyan;display:inline-block;}
-
-.container{
-width:95%;
-margin:20px auto;
-background:#000;
-padding:20px;
-border-radius:10px;
-box-shadow:0 0 20px cyan;
-}
-
-textarea{
-width:100%;
-height:200px;
-background:#000;
-color:#0f0;
-border:1px solid #222;
-padding:10px;
-}
-
-.btn{
-padding:10px 20px;
-margin:10px 5px;
-border:none;
-border-radius:8px;
-cursor:pointer;
-color:#fff;
-background:linear-gradient(270deg,#ff00cc,#3333ff,#00ffff);
-background-size:400% 400%;
-animation:move 4s infinite;
-}
-@keyframes move{
-0%{background-position:0%}
-50%{background-position:100%}
-100%{background-position:0%}
-}
-
-.result{max-height:300px;overflow:auto;margin-top:20px;}
-
-.card{
-display:flex;
-justify-content:space-between;
-background:#111;
-margin:5px 0;
-padding:10px;
-border-left:4px solid lime;
-}
-
-.copy{
-background:#0af;
-border:none;
-padding:6px 12px;
-color:#fff;
-border-radius:6px;
-cursor:pointer;
-transition:0.2s;
-}
-.copy:active{
-transform:translateY(5px) scale(0.9);
-background:#00ff99;
-box-shadow:0 0 10px #00ff99;
-}
-
-.footer{
-display:flex;
-justify-content:space-between;
-align-items:center;
-padding:10px;
-}
-.footer-btn{
-background:linear-gradient(90deg,#ff00cc,#3333ff);
-padding:6px 12px;
-border-radius:6px;
-color:#fff;
-text-decoration:none;
-}
-
-.popup{
-display:none;
-position:fixed;
-top:0;left:0;
-width:100%;height:100%;
-background:rgba(0,0,0,0.8);
-align-items:center;
-justify-content:center;
-}
-
-.popup-box{
-background:#0f172a;
-padding:20px;
-border-radius:15px;
-width:600px;
-max-width:90%;
-}
-
-.popup-box input,
-.popup-box select,
-.popup-box textarea{
-width:100%;
-box-sizing:border-box;
-margin-bottom:10px;
-padding:10px;
-}
-
-.popup-footer{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-top:10px;
-}
-</style>
-
+    <meta charset="UTF-8">
+    <title>THIS PERSON IS BRAND</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            margin: 0;
+            background: #0a0a0a;
+            color: #fff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .header {
+            text-align: center;
+            padding: 20px;
+            background: #000;
+        }
+        .header p {
+            border-bottom: 2px solid cyan;
+            display: inline-block;
+            padding-bottom: 6px;
+        }
+        .container {
+            width: 95%;
+            margin: 20px auto;
+            background: #000;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px cyan;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            background: #0f0f0f;
+            color: #0f0;
+            border: 1px solid #222;
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+            resize: vertical;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #fff;
+            background: linear-gradient(270deg, #ff00cc, #3333ff, #00ffff);
+            background-size: 400% 400%;
+            animation: move 4s infinite;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .btn:active {
+            transform: scale(0.95);
+        }
+        @keyframes move {
+            0% { background-position: 0%; }
+            50% { background-position: 100%; }
+            100% { background-position: 0%; }
+        }
+        .result {
+            max-height: 300px;
+            overflow: auto;
+            margin-top: 20px;
+        }
+        .card {
+            display: flex;
+            justify-content: space-between;
+            background: #111;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 4px solid lime;
+            border-radius: 4px;
+            align-items: center;
+        }
+        .card span {
+            word-break: break-all;
+            font-family: monospace;
+        }
+        .copy {
+            background: #0af;
+            border: none;
+            padding: 6px 12px;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: bold;
+        }
+        .copy:active {
+            transform: translateY(3px) scale(0.9);
+            background: #00ff99;
+            box-shadow: 0 0 10px #00ff99;
+        }
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-btn {
+            background: linear-gradient(90deg, #ff00cc, #3333ff);
+            padding: 6px 16px;
+            border-radius: 6px;
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+        }
+        .popup-box {
+            background: #0f172a;
+            padding: 25px;
+            border-radius: 15px;
+            width: 650px;
+            max-width: 95%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 0 30px cyan;
+        }
+        .popup-box input,
+        .popup-box select,
+        .popup-box textarea {
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #1a1a2e;
+            border: 1px solid #333;
+            color: #fff;
+            border-radius: 6px;
+        }
+        .popup-box textarea {
+            height: 120px;
+        }
+        .popup-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        #counter {
+            text-align: right;
+            margin-top: 10px;
+            padding: 5px 10px;
+            background: #0f0f0f;
+            border-radius: 20px;
+            display: inline-block;
+            float: right;
+        }
+        .inline-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+        }
+        .bin-result {
+            background: #111;
+            padding: 12px;
+            border-radius: 10px;
+            line-height: 1.8;
+            margin-top: 10px;
+        }
+        .important-tool-btn {
+            background: linear-gradient(145deg, #ff416c, #ff4b2b);
+            border: none;
+            padding: 8px 18px;
+            border-radius: 30px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 5px;
+            transition: 0.2s;
+        }
+        .important-tool-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 15px #ff416c;
+        }
+        @media (max-width: 600px) {
+            .container { padding: 10px; }
+            .btn { padding: 8px 12px; }
+        }
+    </style>
 </head>
-
 <body>
 
-<div class="header">
-<h1>🔥 THIS PERSON IS BRAND 🔥</h1>
-<p>Card Filter</p>
-</div>
-
-<div class="container">
-
-<textarea id="input"></textarea>
-
-<button class="btn" onclick="process()">Process</button>
-<button class="btn" onclick="copyAll()">Copy All</button>
-<button class="btn" onclick="downloadTXT()">Download TXT</button>
-<button class="btn" onclick="openPopup()">🔥 Generate</button>
-<button class="btn" onclick="openBin()">💳 BIN Check</button>
-
-<!-- 🔥 ADDED BUTTON -->
-<button class="btn" onclick="openImportantTools()">⚡ IMPORTANT TOOLS</button>
-
-<div id="counter" style="text-align:right;margin-top:10px;">
-Total: 0 | Valid: 0 | Invalid: 0
-</div>
-
-<div id="output" class="result"></div>
-
-</div>
-
-<div class="footer">
-<a class="footer-btn" href="https://t.me/thispersonisbrand537" target="_blank">Admin</a>
-<div style="flex:1;text-align:center;">Developed By THIS PERSON IS BRAND</div>
-<a class="footer-btn" href="https://t.me/onlykopzone5371" target="_blank">Channel</a>
-</div>
-
-<!-- GENERATOR -->
-<div class="popup" id="popup">
-<div class="popup-box">
-
-<h2 style="text-align:center">THIS PERSON IS BRAND</h2>
-<p style="text-align:center;border-bottom:2px solid cyan;">Generator</p>
-
-<label>BIN</label>
-<input id="bin">
-
-<label>Month</label>
-<select id="month"></select>
-
-<label style="display:flex;align-items:center;gap:6px;">
-<input type="checkbox" id="randomMonth">
-<span>Click and Randomize Gen</span>
-</label>
-
-<label>Year</label>
-<select id="year"></select>
-
-<label style="display:flex;align-items:center;gap:6px;">
-<input type="checkbox" id="randomYear">
-<span>Click and Randomize Gen</span>
-</label>
-
-<label>Quantity</label>
-<input id="qty" value="10">
-
-<button class="btn" onclick="generate()">Generate Cards</button>
-
-<textarea id="genOutput"></textarea>
-
-<button class="btn" onclick="copyGen()">Copy Output</button>
-<button class="btn" onclick="closePopup()">Close</button>
-
-<div class="popup-footer">
-<a class="footer-btn" href="https://t.me/thispersonisbrand537" target="_blank">Admin</a>
-<div>Developed By THIS PERSON IS BRAND</div>
-<a class="footer-btn" href="https://t.me/onlykopzone5371" target="_blank">Channel</a>
-</div>
-
-</div>
-</div>
-
-<!-- BIN CHECK -->
-<div class="popup" id="binPopup">
-<div class="popup-box">
-
-<h2 style="text-align:center">BIN Checker</h2>
-
-<input id="binInput" placeholder="Enter BIN">
-
-<button class="btn" onclick="checkBin()">Check</button>
-
-<div id="binResult"></div>
-
-<button class="btn" onclick="closeBin()">Close</button>
-
-<div class="popup-footer">
-<a class="footer-btn" href="https://t.me/thispersonisbrand537">Admin</a>
-<div>Developed By THIS PERSON IS BRAND</div>
-<a class="footer-btn" href="https://t.me/onlykopzone5371">Channel</a>
-</div>
-
-</div>
-</div>
-
-<!-- 🔥 IMPORTANT TOOLS POPUP -->
-<div class="popup" id="importantPopup">
-<div class="popup-box">
-
-<h2 style="text-align:center">FB IMPORTANT TOOLS</h2>
-
-<button class="btn" onclick="downloadFile('add.txt')">Add Account Create</button>
-<button class="btn" onclick="downloadFile('bm.txt')">BM Create</button>
-<button class="btn" onclick="downloadFile('auto.txt')">Add Account Information Autofill</button>
-<button class="btn" onclick="downloadFile('boost.txt')">Boost Extractor Link</button>
-<button class="btn" onclick="downloadFile('remove.txt')">Remove Verify</button>
-
-
-<button class="btn" onclick="closeImportantTools()">Close</button>
-
-<div class="popup-footer">
-<a class="footer-btn" href="https://t.me/thispersonisbrand537">Admin</a>
-<div>Developed By THIS PERSON IS BRAND</div>
-<a class="footer-btn" href="https://t.me/onlykopzone5371">Channel</a>
-</div>
-
-</div>
-</div>
-
-<script>
-
-/* MONTH YEAR */
-for(let i=1;i<=12;i++){
-document.getElementById("month").innerHTML+=`<option>${i.toString().padStart(2,'0')}</option>`;
-}
-for(let i=25;i<=99;i++){
-document.getElementById("year").innerHTML+=`<option>${i}</option>`;
-}
-
-function luhnCheck(num){
-let arr=num.split('').reverse().map(x=>parseInt(x));
-let sum=arr.reduce((acc,val,i)=>{
-if(i%2!==0){val*=2;if(val>9)val-=9;}
-return acc+val;
-},0);
-return sum%10===0;
-}
-
-/* PROCESS FIXED */
-function process(){
-
-let lines=document.getElementById("input").value.split("\n");
-let output=document.getElementById("output");
-
-output.innerHTML="";
-window.finalCards=[];
-
-let total=lines.length;
-
-lines.forEach(line=>{
-
-let nums=line.match(/\d+/g);
-if(!nums) return;
-
-// 🔥 CARD
-let cardIndex = nums.findIndex(n => n.length>=13 && n.length<=16);
-if(cardIndex === -1) return;
-
-let card = nums[cardIndex];
-
-// 🔥 next numbers
-let next = nums.slice(cardIndex+1, cardIndex+4);
-
-// 👉 fallback if less
-while(next.length < 3){
-next.push("00");
-}
-
-let mm="", yy="", cvv="";
-
-// =======================
-// 🔥 SMART DETECT
-// =======================
-next.forEach(n=>{
-let v=parseInt(n);
-
-// MM
-if(v>=1 && v<=12 && !mm){
-mm = n.padStart(2,'0');
-}
-
-// CVV
-else if(n.length==3 && !cvv){
-cvv = n;
-}
-
-// YY
-else if(!yy){
-yy = n.slice(-2);
-}
-});
-
-// =======================
-// 🔥 FORCE FILL (NO SKIP)
-// =======================
-if(!mm) mm = "01";
-if(!yy) yy = "00";
-if(!cvv) cvv = "000";
-
-// =======================
-// FINAL
-// =======================
-let formatted = `${card}|${mm}|${yy}|${cvv}`;
-
-finalCards.push(formatted);
-
-// UI
-let div=document.createElement("div");
-div.className="card";
-
-div.innerHTML=`
-<span>${formatted}</span>
-<button class="copy" onclick="copyText('${formatted}')">Copy</button>
-`;
-
-output.appendChild(div);
-
-});
-
-// remove duplicate
-finalCards = [...new Set(finalCards)];
-
-// counter
-document.getElementById("counter").innerText =
-`Total: ${total} | Valid: ${finalCards.length} | Invalid: 0`;
-
-}
-
-/* COPY */
-function copyText(t){navigator.clipboard.writeText(t);}
-function copyAll(){navigator.clipboard.writeText(finalCards.join("\n"));}
-
-/* DOWNLOAD */
-function downloadTXT(){
-let blob=new Blob([finalCards.join("\n")]);
-let a=document.createElement("a");
-a.href=URL.createObjectURL(blob);
-a.download="cards.txt";
-a.click();
-}
-
-/* GENERATOR */
-function openPopup(){document.getElementById("popup").style.display="flex";}
-function closePopup(){document.getElementById("popup").style.display="none";}
-
-function generate(){
-
-let bin=document.getElementById("bin").value;
-let qty=parseInt(document.getElementById("qty").value);
-
-let result=[];
-
-while(result.length<qty){
-
-let mm=document.getElementById("randomMonth").checked
-? String(Math.floor(Math.random()*12)+1).padStart(2,'0')
-: document.getElementById("month").value;
-
-let yy=document.getElementById("randomYear").checked
-? String(Math.floor(Math.random()*75)+25)
-: document.getElementById("year").value;
-
-let rand="";
-let remain=16-bin.length;
-
-for(let j=0;j<remain-1;j++){
-rand+=Math.floor(Math.random()*10);
-}
-
-let partial=bin+rand;
-
-for(let i=0;i<10;i++){
-let card=partial+i;
-if(luhnCheck(card)){
-let cvv=Math.floor(100+Math.random()*900);
-result.push(`${card}|${mm}|${yy}|${cvv}`);
-break;
-}
-}
-
-}
-
-document.getElementById("genOutput").value=result.join("\n");
-}
-
-function copyGen(){
-navigator.clipboard.writeText(document.getElementById("genOutput").value);
-}
-
-/* BIN CHECKER PRO */
-function openBin(){document.getElementById("binPopup").style.display="flex";}
-function closeBin(){document.getElementById("binPopup").style.display="none";}
-
-async function checkBin(){
-
-let bin=document.getElementById("binInput").value.trim();
-let res=document.getElementById("binResult");
-
-if(bin.length < 6){
-res.innerHTML="❌ Enter minimum 6 digit BIN";
-return;
-}
-
-res.innerHTML="⏳ Checking...";
-
-try{
-
-let url = "https://api.allorigins.win/raw?url=https://lookup.binlist.net/" + bin;
-
-let response = await fetch(url);
-let data = await response.json();
-
-let brand = data.scheme || "N/A";
-let type = data.type || "N/A";
-let bank = data.bank?.name || "N/A";
-let country = data.country?.name || "N/A";
-let flag = data.country?.emoji || "";
-
-res.innerHTML=`
-<div style="background:#111;padding:12px;border-radius:10px;line-height:1.8">
-<b>BIN:</b> ${bin}<br>
-<b>Brand:</b> ${brand.toUpperCase()}<br>
-<b>Type:</b> ${type.toUpperCase()}<br>
-<b>Bank:</b> ${bank}<br>
-<b>Country:</b> ${country} ${flag}
-</div>
-`;
-
-}catch{
-
-res.innerHTML=`<div style="color:red;">❌ BIN DATA NOT FOUND</div>`;
-
-}
-
-}
-
-/* 🔥 IMPORTANT TOOLS JS */
-function openImportantTools(){
-document.getElementById("importantPopup").style.display="flex";
-}
-function closeImportantTools(){
-document.getElementById("importantPopup").style.display="none";
-}
-function downloadFile(path){
-let a=document.createElement("a");
-a.href=path;
-a.download=path.split("/").pop();
-a.click();
-}
-
-</script>
-
+    <div class="header">
+        <h1>🔥 THIS PERSON IS BRAND 🔥</h1>
+        <p>Card Filter • Unlimited</p>
+    </div>
+
+    <div class="container">
+        <textarea id="input" placeholder="Paste cards or raw data here...&#10;Example:&#10;4008950049474448|10|29|111&#10;1838893 4008950049474448 10/29 111 $9.20 Refunded"></textarea>
+
+        <div>
+            <button class="btn" onclick="process()">🔍 Process</button>
+            <button class="btn" onclick="copyAll()">📋 Copy All</button>
+            <button class="btn" onclick="downloadTXT()">⬇️ Download TXT</button>
+            <button class="btn" onclick="openPopup()">⚡ Generate</button>
+            <button class="btn" onclick="openBin()">💳 BIN Check</button>
+            <button class="btn" onclick="openImportantTools()">🛠️ IMPORTANT TOOLS</button>
+        </div>
+
+        <div id="counter" style="text-align:right;margin-top:10px;">
+            Total: 0 | Valid: 0 | Invalid: 0
+        </div>
+
+        <div id="output" class="result"></div>
+    </div>
+
+    <div class="footer">
+        <a class="footer-btn" href="https://t.me/thispersonisbrand537" target="_blank">👤 Admin</a>
+        <div style="flex:1;text-align:center;">Developed By THIS PERSON IS BRAND</div>
+        <a class="footer-btn" href="https://t.me/onlykopzone5371" target="_blank">📢 Channel</a>
+    </div>
+
+    <!-- GENERATOR POPUP -->
+    <div class="popup" id="popup">
+        <div class="popup-box">
+            <h2 style="text-align:center">THIS PERSON IS BRAND</h2>
+            <p style="text-align:center;border-bottom:2px solid cyan;padding-bottom:6px;">Generator</p>
+
+            <label>BIN</label>
+            <input id="bin" placeholder="e.g. 400895">
+
+            <label>Month</label>
+            <select id="month"></select>
+
+            <label style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+                <input type="checkbox" id="randomMonth"> <span>Random Month</span>
+            </label>
+
+            <label>Year</label>
+            <select id="year"></select>
+
+            <label style="display:flex;align-items:center;gap:8px;margin:6px 0;">
+                <input type="checkbox" id="randomYear"> <span>Random Year</span>
+            </label>
+
+            <label>Quantity</label>
+            <input id="qty" value="10" type="number" min="1">
+
+            <button class="btn" onclick="generate()">🎲 Generate Cards</button>
+
+            <textarea id="genOutput" placeholder="Generated cards will appear here..."></textarea>
+
+            <button class="btn" onclick="copyGen()">📋 Copy Output</button>
+            <button class="btn" onclick="closePopup()">❌ Close</button>
+
+            <div class="popup-footer">
+                <a class="footer-btn" href="https://t.me/thispersonisbrand537" target="_blank">Admin</a>
+                <div>Developed By THIS PERSON IS BRAND</div>
+                <a class="footer-btn" href="https://t.me/onlykopzone5371" target="_blank">Channel</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- BIN CHECK POPUP -->
+    <div class="popup" id="binPopup">
+        <div class="popup-box">
+            <h2 style="text-align:center">💳 BIN Checker</h2>
+            <input id="binInput" placeholder="Enter BIN (e.g. 400895)" style="width:100%;">
+            <button class="btn" onclick="checkBin()">🔍 Check</button>
+            <div id="binResult" class="bin-result"></div>
+            <button class="btn" onclick="closeBin()">❌ Close</button>
+            <div class="popup-footer">
+                <a class="footer-btn" href="https://t.me/thispersonisbrand537">Admin</a>
+                <div>Developed By THIS PERSON IS BRAND</div>
+                <a class="footer-btn" href="https://t.me/onlykopzone5371">Channel</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMPORTANT TOOLS POPUP -->
+    <div class="popup" id="importantPopup">
+        <div class="popup-box">
+            <h2 style="text-align:center">⚡ FB IMPORTANT TOOLS</h2>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:15px 0;">
+                <button class="important-tool-btn" onclick="downloadFile('add.txt')">📁 Add Account Create</button>
+                <button class="important-tool-btn" onclick="downloadFile('bm.txt')">📁 BM Create</button>
+                <button class="important-tool-btn" onclick="downloadFile('auto.txt')">📁 Account Autofill</button>
+                <button class="important-tool-btn" onclick="downloadFile('boost.txt')">📁 Boost Extractor</button>
+                <button class="important-tool-btn" onclick="downloadFile('remove.txt')">📁 Remove Verify</button>
+            </div>
+            <button class="btn" onclick="closeImportantTools()">❌ Close</button>
+            <div class="popup-footer">
+                <a class="footer-btn" href="https://t.me/thispersonisbrand537">Admin</a>
+                <div>Developed By THIS PERSON IS BRAND</div>
+                <a class="footer-btn" href="https://t.me/onlykopzone5371">Channel</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ---- MONTH / YEAR ----
+        (function populateSelects() {
+            const monthSel = document.getElementById('month');
+            for (let i = 1; i <= 12; i++) {
+                let val = i.toString().padStart(2, '0');
+                monthSel.innerHTML += `<option value="${val}">${val}</option>`;
+            }
+            const yearSel = document.getElementById('year');
+            for (let i = 25; i <= 99; i++) {
+                yearSel.innerHTML += `<option value="${i}">${i}</option>`;
+            }
+        })();
+
+        // ---- LUHN ----
+        function luhnCheck(num) {
+            let arr = num.split('').reverse().map(x => parseInt(x));
+            let sum = arr.reduce((acc, val, i) => {
+                if (i % 2 !== 0) { val *= 2; if (val > 9) val -= 9; }
+                return acc + val;
+            }, 0);
+            return sum % 10 === 0;
+        }
+
+        // ---- GLOBAL STORE ----
+        let finalCards = [];
+
+        // ================ PROCESS (UNLIMITED DETECT) ================
+        function process() {
+            const raw = document.getElementById("input").value;
+            const lines = raw.split(/\r?\n/);
+            const output = document.getElementById("output");
+            output.innerHTML = "";
+            finalCards = [];
+            let totalLines = 0;
+            let validCards = 0;
+
+            lines.forEach(line => {
+                if (!line.trim()) return;
+                totalLines++;
+
+                // Extract all numbers
+                const nums = line.match(/\d+/g);
+                if (!nums) return;
+
+                let card = null;
+                let mm = null, yy = null, cvv = null;
+
+                // 1) find primary card (13-16 digits) - take first valid
+                for (let i = 0; i < nums.length; i++) {
+                    const n = nums[i];
+                    if (n.length >= 13 && n.length <= 16) {
+                        card = n;
+                        // look ahead for mm, yy, cvv after card index
+                        const next = nums.slice(i + 1);
+                        // try to extract MM (01-12), YY (2 digit), CVV (3 digit)
+                        let tempMM = null, tempYY = null, tempCVV = null;
+                        for (let j = 0; j < next.length; j++) {
+                            const val = parseInt(next[j]);
+                            // MM: 1-12
+                            if (!tempMM && val >= 1 && val <= 12) {
+                                tempMM = next[j].padStart(2, '0');
+                                continue;
+                            }
+                            // CVV: exactly 3 digits (and not already set)
+                            if (!tempCVV && next[j].length === 3) {
+                                tempCVV = next[j];
+                                continue;
+                            }
+                            // YY: 2 digit year (or 4 digit year -> take last 2)
+                            if (!tempYY) {
+                                if (next[j].length === 2) {
+                                    tempYY = next[j];
+                                } else if (next[j].length === 4) {
+                                    tempYY = next[j].slice(-2);
+                                }
+                            }
+                            // if we have all three, break
+                            if (tempMM && tempYY && tempCVV) break;
+                        }
+
+                        // fallback: if some missing, try to infer from adjacent tokens
+                        // but we already have best effort
+
+                        // assign
+                        mm = tempMM || '01';
+                        yy = tempYY || '00';
+                        cvv = tempCVV || '000';
+
+                        // if mm is not valid, set default
+                        if (parseInt(mm) < 1 || parseInt(mm) > 12) mm = '01';
+                        if (yy.length !== 2) yy = '00';
+                        if (cvv.length !== 3) cvv = '000';
+
+                        const formatted = `${card}|${mm}|${yy}|${cvv}`;
+                        finalCards.push(formatted);
+                        validCards++;
+
+                        // render card
+                        const div = document.createElement("div");
+                        div.className = "card";
+                        div.innerHTML = `
+                            <span>${formatted}</span>
+                            <button class="copy" onclick="copyText('${formatted.replace(/'/g, "\\'")}')">📋 Copy</button>
+                        `;
+                        output.appendChild(div);
+                        break; // process only first valid card per line
+                    }
+                }
+            });
+
+            // remove duplicates
+            finalCards = [...new Set(finalCards)];
+            validCards = finalCards.length;
+
+            document.getElementById("counter").innerHTML =
+                `Total: ${totalLines} | Valid: ${validCards} | Invalid: ${totalLines - validCards}`;
+        }
+
+        // ---- COPY / DOWNLOAD ----
+        function copyText(t) { navigator.clipboard.writeText(t).catch(() => {}); }
+        function copyAll() { navigator.clipboard.writeText(finalCards.join("\n")).catch(() => {}); }
+
+        function downloadTXT() {
+            if (!finalCards.length) return;
+            const blob = new Blob([finalCards.join("\n")], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = "cards.txt";
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // ---- GENERATOR ----
+        function openPopup() { document.getElementById("popup").style.display = "flex"; }
+        function closePopup() { document.getElementById("popup").style.display = "none"; }
+
+        function generate() {
+            const bin = document.getElementById("bin").value.trim();
+            let qty = parseInt(document.getElementById("qty").value) || 10;
+            if (!bin || bin.length < 6) { alert("Enter at least 6 digit BIN"); return; }
+            if (qty < 1) qty = 1;
+            const randomMonth = document.getElementById("randomMonth").checked;
+            const randomYear = document.getElementById("randomYear").checked;
+            const monthSel = document.getElementById("month");
+            const yearSel = document.getElementById("year");
+
+            const result = [];
+            let attempts = 0;
+            const maxAttempts = qty * 20;
+
+            while (result.length < qty && attempts < maxAttempts) {
+                attempts++;
+                let mm = randomMonth ? String(Math.floor(Math.random() * 12) + 1).padStart(2, '0') : monthSel.value;
+                let yy = randomYear ? String(Math.floor(Math.random() * 75) + 25) : yearSel.value;
+                let prefix = bin;
+                let remaining = 16 - prefix.length;
+                if (remaining < 1) remaining = 1;
+                let rand = "";
+                for (let i = 0; i < remaining - 1; i++) {
+                    rand += Math.floor(Math.random() * 10);
+                }
+                let partial = prefix + rand;
+                for (let i = 0; i < 10; i++) {
+                    let candidate = partial + i;
+                    if (luhnCheck(candidate)) {
+                        let cvv = String(Math.floor(100 + Math.random() * 900));
+                        result.push(`${candidate}|${mm}|${yy}|${cvv}`);
+                        break;
+                    }
+                }
+            }
+
+            document.getElementById("genOutput").value = result.join("\n");
+        }
+
+        function copyGen() {
+            const val = document.getElementById("genOutput").value;
+            if (val) navigator.clipboard.writeText(val).catch(() => {});
+        }
+
+        // ---- BIN CHECK ----
+        function openBin() { document.getElementById("binPopup").style.display = "flex"; }
+        function closeBin() { document.getElementById("binPopup").style.display = "none"; }
+
+        async function checkBin() {
+            const bin = document.getElementById("binInput").value.trim();
+            const res = document.getElementById("binResult");
+            if (bin.length < 6) { res.innerHTML = "❌ Enter minimum 6 digit BIN"; return; }
+            res.innerHTML = "⏳ Checking...";
+            try {
+                const url = "https://api.allorigins.win/raw?url=https://lookup.binlist.net/" + bin;
+                const response = await fetch(url);
+                const data = await response.json();
+                const brand = data.scheme || "N/A";
+                const type = data.type || "N/A";
+                const bank = data.bank?.name || "N/A";
+                const country = data.country?.name || "N/A";
+                const flag = data.country?.emoji || "";
+                res.innerHTML = `
+                    <div style="background:#1a1a2e;padding:12px;border-radius:10px;line-height:1.8">
+                        <b>BIN:</b> ${bin}<br>
+                        <b>Brand:</b> ${brand.toUpperCase()}<br>
+                        <b>Type:</b> ${type.toUpperCase()}<br>
+                        <b>Bank:</b> ${bank}<br>
+                        <b>Country:</b> ${country} ${flag}
+                    </div>
+                `;
+            } catch (e) {
+                res.innerHTML = `<div style="color:red;">❌ BIN DATA NOT FOUND</div>`;
+            }
+        }
+
+        // ---- IMPORTANT TOOLS ----
+        function openImportantTools() { document.getElementById("importantPopup").style.display = "flex"; }
+        function closeImportantTools() { document.getElementById("importantPopup").style.display = "none"; }
+        function downloadFile(path) {
+            // Create dummy text files for demonstration
+            const content = `This is a placeholder for ${path}`;
+            const blob = new Blob([content], { type: "text/plain" });
+            const a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = path;
+            a.click();
+            URL.revokeObjectURL(a.href);
+        }
+
+        // ---- auto process sample on load? (optional) ----
+        window.onload = function() {
+            // prefill with sample data if empty
+            const sample = `1838893 4008950049474448 10/29 111 $ 9.20 Refunded 2026-08-11
+1838878 4008950022692537 08/29 111 $ 9.00 Refunded 2026-08-11
+4008950049474448|10|29|111
+4008950022692537|08|29|111`;
+            const inp = document.getElementById("input");
+            if (!inp.value.trim()) inp.value = sample;
+            process(); // auto process
+        };
+    </script>
 </body>
 </html>
