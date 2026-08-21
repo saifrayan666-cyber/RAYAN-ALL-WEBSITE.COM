@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>THIS PERSON IS BRAND</title>
+    <title>THIS PERSON IS BRAND - CARD FILTER & BIN FILTER</title>
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -109,9 +109,36 @@
             position: relative;
             z-index: 1;
         }
+        .mode-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 10px;
+        }
+        .mode-tabs button {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 10px;
+            background: rgba(255,255,255,0.05);
+            color: #888;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+        .mode-tabs button:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .mode-tabs button.active {
+            background: linear-gradient(135deg, #ff00cc, #3333ff);
+            color: #fff;
+            box-shadow: 0 5px 20px rgba(255, 0, 204, 0.3);
+        }
         textarea { 
             width: 100%; 
-            height: 200px; 
+            height: 150px; 
             background: rgba(17, 17, 17, 0.9); 
             color: #0f0; 
             border: 1px solid #2a2a2a; 
@@ -159,58 +186,79 @@
         .btn-success { background: linear-gradient(135deg, #00b894, #00cec9); }
         .btn-warning { background: linear-gradient(135deg, #fdcb6e, #f39c12); }
         .btn-danger { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-        .result { max-height: 300px; overflow: auto; margin-top: 15px; }
+        .btn-amex { background: linear-gradient(135deg, #006fcf, #00a3ff); }
+        .btn-visa { background: linear-gradient(135deg, #1a1f71, #2a3f9a); }
+        .btn-master { background: linear-gradient(135deg, #eb001b, #f79e1b); }
+        .btn-discover { background: linear-gradient(135deg, #ff6000, #ff8c00); }
+        .btn-jcb { background: linear-gradient(135deg, #1a8a3f, #2ecc71); }
+        .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .btn-group .btn { flex: 1; min-width: 80px; }
+        .result { max-height: 400px; overflow: auto; margin-top: 15px; }
         .result::-webkit-scrollbar { width: 6px; }
         .result::-webkit-scrollbar-track { background: #0d0d0d; border-radius: 3px; }
         .result::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #ff00cc, #00ffff); border-radius: 3px; }
-        .card { 
-            display: flex; 
-            justify-content: space-between; 
-            background: rgba(17, 17, 17, 0.8);
-            backdrop-filter: blur(5px);
-            margin: 4px 0; 
-            padding: 10px 16px; 
-            border-left: 4px solid #00ff88; 
-            border-radius: 8px; 
-            align-items: center; 
-            transition: 0.3s; 
-            animation: slideIn 0.3s ease;
+        .bin-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
+        .bin-table th {
+            text-align: left;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.05);
+            border-bottom: 2px solid rgba(255,255,255,0.1);
+            color: #aaa;
+            font-weight: bold;
+            letter-spacing: 1px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(10px);
         }
-        .card:hover { 
-            background: rgba(26, 26, 26, 0.9); 
-            border-left-color: #00ffff;
-            transform: translateX(5px);
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.05);
+        .bin-table td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+            transition: 0.2s;
         }
-        .card span { 
-            word-break: break-all; 
-            font-family: 'Courier New', monospace; 
-            font-size: 14px; 
-            color: #00ff88; 
+        .bin-table tr:hover td {
+            background: rgba(255,255,255,0.03);
         }
-        .card-invalid {
-            border-left-color: #ff6b6b;
-            opacity: 0.8;
+        .bin-table .amex td:first-child { border-left: 3px solid #006fcf; }
+        .bin-table .visa td:first-child { border-left: 3px solid #1a1f71; }
+        .bin-table .master td:first-child { border-left: 3px solid #eb001b; }
+        .bin-table .discover td:first-child { border-left: 3px solid #ff6000; }
+        .bin-table .jcb td:first-child { border-left: 3px solid #1a8a3f; }
+        .bin-table .unknown td:first-child { border-left: 3px solid #666; }
+        .badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: bold;
         }
-        .card-invalid span { color: #ff6b6b; }
-        .copy { 
-            background: linear-gradient(135deg, #00b894, #00cec9); 
-            border: none; 
-            padding: 5px 14px; 
-            color: #fff; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: bold; 
-            font-size: 12px;
-            transition: 0.3s; 
-            flex-shrink: 0;
+        .badge-amex { background: rgba(0, 111, 207, 0.3); color: #66b3ff; }
+        .badge-visa { background: rgba(26, 31, 113, 0.3); color: #4a6fff; }
+        .badge-master { background: rgba(235, 0, 27, 0.3); color: #ff6b6b; }
+        .badge-discover { background: rgba(255, 96, 0, 0.3); color: #ffaa33; }
+        .badge-jcb { background: rgba(26, 138, 63, 0.3); color: #4ade80; }
+        .badge-unknown { background: rgba(255,255,255,0.05); color: #888; }
+        .badge-valid { background: rgba(0, 255, 136, 0.2); color: #00ff88; }
+        .badge-invalid { background: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+        .copy-small {
+            background: linear-gradient(135deg, #00b894, #00cec9);
+            border: none;
+            padding: 2px 10px;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 10px;
+            transition: 0.3s;
         }
-        .copy:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 206, 201, 0.4); }
-        .copy:active { transform: scale(0.9); }
+        .copy-small:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 206, 201, 0.4);
+        }
         .footer { 
             display: flex;
             flex-direction: column;
@@ -242,143 +290,73 @@
         }
         .footer-details span { color: #666; }
         .footer-details .highlight { color: #00ff88; }
-        .popup { 
-            display: none; 
-            position: fixed; 
-            top: 0; 
-            left: 0; 
-            width: 100%; 
-            height: 100%; 
-            background: rgba(0, 0, 0, 0.92); 
-            align-items: center; 
-            justify-content: center; 
-            z-index: 999; 
-            backdrop-filter: blur(10px);
-            animation: fadeIn 0.3s ease;
+        .file-upload-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            padding: 10px 0;
         }
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        .popup-box { 
-            background: linear-gradient(145deg, #0f172a, #1a1a3e); 
-            padding: 30px; 
-            border-radius: 25px; 
-            width: 98%;
-            max-width: 1300px;
-            max-height: 95vh; 
-            overflow-y: auto; 
-            box-shadow: 0 0 80px rgba(0, 255, 255, 0.15), inset 0 1px 0 rgba(255,255,255,0.05); 
-            border: 1px solid rgba(0, 255, 255, 0.15);
-            animation: popIn 0.4s ease;
-        }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
-        .popup-box h2 { 
-            text-align: center; 
-            font-size: 32px; 
-            margin: 0 0 5px 0; 
-            background: linear-gradient(90deg, #ff00cc, #00ffff); 
-            -webkit-background-clip: text; 
-            -webkit-text-fill-color: transparent; 
-        }
-        .popup-box .subtitle { 
-            text-align: center; 
-            border-bottom: 2px solid rgba(0, 255, 255, 0.3); 
-            padding-bottom: 12px; 
-            color: #888; 
-            margin-bottom: 20px; 
-            font-size: 14px;
-            letter-spacing: 2px;
-        }
-        .popup-box label { 
-            display: block; 
-            color: #aaa; 
-            font-size: 13px; 
-            margin-bottom: 5px; 
-            font-weight: bold; 
-            letter-spacing: 1px;
-        }
-        .popup-box input, .popup-box select, .popup-box textarea { 
-            width: 100%; 
-            box-sizing: border-box; 
-            margin-bottom: 15px; 
-            padding: 12px 16px; 
-            background: rgba(13, 13, 43, 0.8); 
-            border: 1px solid #2a2a5a; 
-            color: #fff; 
-            border-radius: 12px; 
-            font-size: 14px; 
-            transition: 0.3s; 
-        }
-        .popup-box input:focus, .popup-box select:focus, .popup-box textarea:focus { 
-            border-color: cyan; 
-            outline: none; 
-            box-shadow: 0 0 30px rgba(0, 255, 255, 0.08); 
-        }
-        .popup-footer { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            margin-top: 15px; 
-            flex-wrap: wrap; 
-            gap: 10px; 
-            padding-top: 15px; 
-            border-top: 1px solid rgba(26, 26, 62, 0.5); 
-        }
-        .checkbox-group { 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            margin: 6px 0 14px 0; 
-            padding: 8px 14px;
-            background: rgba(0, 255, 255, 0.03);
+        .file-upload-area input[type="file"] { display: none; }
+        .file-label {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
             border-radius: 10px;
-            border: 1px solid rgba(0, 255, 255, 0.05);
-        }
-        .checkbox-group input[type="checkbox"] { 
-            width: 20px; 
-            height: 20px; 
-            accent-color: cyan; 
-            margin: 0; 
             cursor: pointer;
-        }
-        .checkbox-group label { 
-            margin: 0; 
-            cursor: pointer; 
-            color: #ccc; 
-            font-weight: normal;
-        }
-        #counter { 
-            text-align: right; 
-            margin-top: 12px; 
-            padding: 8px 18px; 
-            background: rgba(13, 13, 13, 0.8); 
-            border-radius: 25px; 
-            display: inline-block; 
-            float: right; 
-            border: 1px solid rgba(26, 26, 26, 0.5); 
-            font-size: 13px; 
-            color: #888; 
-            backdrop-filter: blur(5px);
-        }
-        #counter span { color: #00ff88; font-weight: bold; }
-        #counter .invalid-count { color: #ff6b6b; }
-        .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-        .btn-group .btn { flex: 1; min-width: 100px; }
-        .year-limit-info { 
-            color: #00ff88; 
-            font-size: 12px; 
-            margin-top: -8px; 
-            margin-bottom: 12px; 
-            padding: 6px 14px; 
-            background: rgba(0, 255, 136, 0.05); 
-            border-radius: 8px; 
-            border-left: 3px solid #00ff88; 
             font-weight: bold;
+            transition: 0.3s;
+            color: #fff;
+            font-size: 13px;
         }
+        .file-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 25px rgba(108, 92, 231, 0.4);
+        }
+        .file-info {
+            color: #888;
+            font-size: 13px;
+            padding: 5px 12px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+        }
+        .filter-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 12px 0;
+        }
+        .filter-tabs button {
+            padding: 8px 18px;
+            border: 2px solid transparent;
+            border-radius: 25px;
+            background: rgba(255,255,255,0.05);
+            color: #aaa;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+        .filter-tabs button:hover {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+        }
+        .filter-tabs button.active {
+            border-color: cyan;
+            color: #fff;
+            background: rgba(0, 255, 255, 0.1);
+        }
+        .filter-tabs button.amex { border-color: #006fcf; color: #66b3ff; }
+        .filter-tabs button.amex.active { background: rgba(0, 111, 207, 0.2); }
+        .filter-tabs button.visa { border-color: #1a1f71; color: #4a6fff; }
+        .filter-tabs button.visa.active { background: rgba(26, 31, 113, 0.2); }
+        .filter-tabs button.master { border-color: #eb001b; color: #ff6b6b; }
+        .filter-tabs button.master.active { background: rgba(235, 0, 27, 0.2); }
+        .filter-tabs button.discover { border-color: #ff6000; color: #ffaa33; }
+        .filter-tabs button.discover.active { background: rgba(255, 96, 0, 0.2); }
+        .filter-tabs button.jcb { border-color: #1a8a3f; color: #4ade80; }
+        .filter-tabs button.jcb.active { background: rgba(26, 138, 63, 0.2); }
+        .filter-tabs button.all { border-color: #888; color: #aaa; }
+        .filter-tabs button.all.active { background: rgba(255,255,255,0.1); }
         .status-bar {
             display: flex;
             justify-content: space-between;
@@ -409,77 +387,15 @@
             transform: translateX(-50%) translateY(0);
         }
         .toast .toast-icon { margin-right: 10px; }
-        .file-upload-area {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            align-items: center;
-            padding: 10px 0;
-        }
-        .file-upload-area input[type="file"] { display: none; }
-        .file-label {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            color: #fff;
-            font-size: 13px;
-        }
-        .file-label:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 25px rgba(108, 92, 231, 0.4);
-        }
-        .file-info {
-            color: #888;
-            font-size: 13px;
-            padding: 5px 12px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-        }
-        .generator-layout {
-            display: flex;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-        .generator-left {
-            flex: 1;
-            min-width: 280px;
-            max-width: 450px;
-        }
-        .generator-right {
-            flex: 2;
-            min-width: 400px;
-        }
-        .invalid-section {
-            margin-top: 20px;
-            border-top: 2px solid rgba(255, 107, 107, 0.25);
-            padding-top: 15px;
-        }
-        .invalid-section h4 {
-            color: #ff6b6b;
-            margin-bottom: 12px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .valid-section h4 {
-            color: #00ff88;
-            margin-bottom: 12px;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
         .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
+            margin: 10px 0;
         }
+        .section-header h4 { font-size: 16px; }
         .section-header .copy-all-btn {
             background: linear-gradient(135deg, #00b894, #00cec9);
             border: none;
@@ -513,130 +429,80 @@
             border-color: cyan;
             background: rgba(0, 255, 255, 0.08);
         }
-        .test-card-badge {
-            display: inline-block;
-            background: rgba(0, 255, 136, 0.15);
-            color: #00ff88;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-size: 11px;
-            margin-left: 8px;
-        }
-        .bin-preset {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 10px;
-        }
-        .bin-preset button {
-            padding: 4px 12px;
-            border: 1px solid rgba(0, 255, 255, 0.2);
-            border-radius: 6px;
-            background: rgba(0, 255, 255, 0.05);
-            color: #aaa;
-            cursor: pointer;
-            font-size: 11px;
-            transition: 0.3s;
-        }
-        .bin-preset button:hover {
-            border-color: cyan;
-            color: #fff;
-            background: rgba(0, 255, 255, 0.1);
-        }
-        .gen-card-item {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(17, 17, 17, 0.8);
-            margin: 3px 0;
-            padding: 6px 12px;
-            border-left: 3px solid #00ff88;
-            border-radius: 6px;
-            align-items: center;
-        }
-        .gen-card-item span {
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            color: #00ff88;
-            word-break: break-all;
-        }
-        .gen-card-item .copy-small {
-            background: linear-gradient(135deg, #00b894, #00cec9);
-            border: none;
-            padding: 2px 10px;
-            color: #fff;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 10px;
-            transition: 0.3s;
-            flex-shrink: 0;
-            margin-left: 8px;
-        }
-        .gen-card-item .copy-small:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(0, 206, 201, 0.4);
-        }
-        .gen-output-container {
-            max-height: 420px;
-            overflow-y: auto;
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 5px 10px;
-            margin-bottom: 10px;
-        }
-        .gen-output-container::-webkit-scrollbar {
-            width: 5px;
-        }
-        .gen-output-container::-webkit-scrollbar-track {
-            background: #0d0d0d;
-            border-radius: 3px;
-        }
-        .gen-output-container::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #ff00cc, #00ffff);
-            border-radius: 3px;
-        }
-        .cvv-option {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-        .cvv-option label {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: normal;
-            color: #aaa;
-            cursor: pointer;
-        }
-        .cvv-option input[type="radio"] {
-            width: 16px;
-            height: 16px;
-            accent-color: cyan;
-            cursor: pointer;
-            margin: 0;
-        }
-        .year-select-wrapper {
+        .download-section {
             display: flex;
             gap: 10px;
-            align-items: center;
+            flex-wrap: wrap;
+            margin: 8px 0;
         }
-        .year-select-wrapper select {
-            flex: 1;
+        .download-section .btn { margin: 0; }
+        #counter {
+            text-align: right;
+            padding: 8px 18px;
+            background: rgba(13, 13, 13, 0.8);
+            border-radius: 25px;
+            border: 1px solid rgba(26, 26, 26, 0.5);
+            font-size: 13px;
+            color: #888;
         }
+        #counter span { color: #00ff88; font-weight: bold; }
+        #counter .invalid-count { color: #ff6b6b; }
+        .card { 
+            display: flex; 
+            justify-content: space-between; 
+            background: rgba(17, 17, 17, 0.8);
+            backdrop-filter: blur(5px);
+            margin: 4px 0; 
+            padding: 10px 16px; 
+            border-left: 4px solid #00ff88; 
+            border-radius: 8px; 
+            align-items: center; 
+            transition: 0.3s; 
+            animation: slideIn 0.3s ease;
+        }
+        .card:hover { 
+            background: rgba(26, 26, 26, 0.9); 
+            border-left-color: #00ffff;
+            transform: translateX(5px);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.05);
+        }
+        .card span { 
+            word-break: break-all; 
+            font-family: 'Courier New', monospace; 
+            font-size: 14px; 
+            color: #00ff88; 
+        }
+        .card-invalid {
+            border-left-color: #ff6b6b;
+            opacity: 0.8;
+        }
+        .card-invalid span { color: #ff6b6b; }
+        .copy { 
+            background: linear-gradient(135deg, #00b894, #00cec9); 
+            border: none; 
+            padding: 5px 14px; 
+            color: #fff; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            font-size: 12px;
+            transition: 0.3s; 
+            flex-shrink: 0;
+        }
+        .copy:hover { transform: scale(1.05); box-shadow: 0 0 30px rgba(0, 206, 201, 0.4); }
+        .copy:active { transform: scale(0.9); }
+        .mode-content { display: none; }
+        .mode-content.active { display: block; }
         @media (max-width: 600px) { 
             .container { padding: 12px; } 
             .btn { padding: 10px 16px; font-size: 12px; } 
-            .popup-box { padding: 18px; max-width: 98%; }
             .header h1 { font-size: 22px; }
             .toast { padding: 12px 20px; font-size: 14px; width: 90%; text-align: center; }
-            .generator-layout { flex-direction: column; }
-            .generator-left { max-width: 100%; }
-            .generator-right { min-width: 100%; }
             .footer-details { gap: 8px; font-size: 11px; }
-            .cvv-option { flex-wrap: wrap; }
-            .year-select-wrapper { flex-wrap: wrap; }
+            .filter-tabs button { padding: 6px 12px; font-size: 11px; }
+            .bin-table { font-size: 11px; }
+            .bin-table th, .bin-table td { padding: 6px 8px; }
+            .mode-tabs button { padding: 8px 16px; font-size: 12px; }
         }
     </style>
 </head>
@@ -654,52 +520,113 @@
 
 <div class="header" onclick="window.open('https://t.me/thispersonisbrand537','_blank')">
     <h1>🔥 THIS PERSON IS BRAND</h1>
-    <p>Card Filter • Luhn Validated • Smart Extract</p>
+    <p>Card Filter • BIN Filter • Luhn Validated</p>
 </div>
 
 <div class="container">
-    <div class="drag-drop-area" id="dropArea">
-        📁 Drag & Drop TXT / XLSX files here or click to upload
-        <input type="file" id="fileInput" accept=".txt,.xlsx" style="display:none;">
-        <div style="margin-top:8px;font-size:12px;color:#555;">Supported: .txt, .xlsx</div>
+    <!-- Mode Selection -->
+    <div class="mode-tabs">
+        <button class="active" onclick="switchMode('card')">💳 Card Filter</button>
+        <button onclick="switchMode('bin')">🔢 BIN Filter</button>
     </div>
 
-    <textarea id="input" placeholder="Card details paste here..."></textarea>
-
-    <div class="file-upload-area">
-        <span class="file-info" id="fileInfo">No file selected</span>
-        <span class="file-info" id="lineCount">Lines: 0</span>
-        <button class="btn btn-danger" onclick="clearInput()" style="padding:8px 18px;margin:0;">🗑️ Clear</button>
-    </div>
-
-    <div class="btn-group">
-        <button class="btn btn-primary" onclick="process()">🔍 Process</button>
-        <button class="btn btn-success" onclick="copyAll()">📋 Copy All</button>
-        <button class="btn btn-warning" onclick="downloadTXT()">⬇️ Download TXT</button>
-        <button class="btn" onclick="openPopup()" style="background:linear-gradient(135deg,#ff00cc,#00ffff);">⚡ Generate</button>
-    </div>
-
-    <div class="status-bar">
-        <div id="counter">
-            Total: <span id="totalCount">0</span> | Valid: <span id="validCount">0</span> | Invalid: <span id="invalidCount" class="invalid-count">0</span>
+    <!-- ========== CARD FILTER MODE ========== -->
+    <div id="cardMode" class="mode-content active">
+        <div class="drag-drop-area" id="dropAreaCard">
+            📁 Drag & Drop TXT / XLSX files here or click to upload
+            <input type="file" id="fileInputCard" accept=".txt,.xlsx" style="display:none;">
+            <div style="margin-top:8px;font-size:12px;color:#555;">Supported: .txt, .xlsx</div>
         </div>
-        <div style="font-size:12px;color:#666;">Auto-detect: MM | YY | CVV</div>
+
+        <textarea id="cardInput" placeholder="Paste card details here..."></textarea>
+
+        <div class="file-upload-area">
+            <span class="file-info" id="fileInfoCard">No file selected</span>
+            <span class="file-info" id="lineCountCard">Lines: 0</span>
+            <button class="btn btn-danger" onclick="clearCard()" style="padding:8px 18px;margin:0;">🗑️ Clear</button>
+        </div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="processCard()">🔍 Process</button>
+            <button class="btn btn-success" onclick="copyAllCard()">📋 Copy All</button>
+            <button class="btn btn-warning" onclick="downloadCard()">⬇️ Download TXT</button>
+        </div>
+
+        <div class="status-bar">
+            <div id="counterCard" style="text-align:right;padding:8px 18px;background:rgba(13,13,13,0.8);border-radius:25px;border:1px solid rgba(26,26,26,0.5);font-size:13px;color:#888;">
+                Total: <span id="totalCountCard">0</span> | Valid: <span id="validCountCard">0</span> | Invalid: <span id="invalidCountCard" style="color:#ff6b6b;">0</span>
+            </div>
+        </div>
+
+        <div id="validSection" style="display:none;">
+            <div class="section-header">
+                <h4 style="color:#00ff88;">✅ Valid Cards</h4>
+                <button class="copy-all-btn" onclick="copyValid()">📋 Copy All Valid</button>
+            </div>
+            <div id="validOutput" class="result"></div>
+        </div>
+
+        <div id="invalidSection" style="display:none;">
+            <div class="section-header">
+                <h4 style="color:#ff6b6b;">❌ Invalid Cards</h4>
+                <button class="copy-all-btn" onclick="copyInvalid()" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24);">📋 Copy All Invalid</button>
+            </div>
+            <div id="invalidOutput" class="result"></div>
+        </div>
     </div>
 
-    <div id="validSection" style="display:none;">
-        <div class="section-header">
-            <h4 style="color:#00ff88;">✅ Valid Cards</h4>
-            <button class="copy-all-btn" onclick="copyValid()">📋 Copy All Valid</button>
+    <!-- ========== BIN FILTER MODE ========== -->
+    <div id="binMode" class="mode-content">
+        <div class="drag-drop-area" id="dropAreaBin">
+            📁 Drag & Drop TXT / XLSX files here or click to upload
+            <input type="file" id="fileInputBin" accept=".txt,.xlsx" style="display:none;">
+            <div style="margin-top:8px;font-size:12px;color:#555;">Supported: .txt, .xlsx</div>
         </div>
-        <div id="output" class="result"></div>
-    </div>
 
-    <div id="invalidSection" style="display:none;" class="invalid-section">
-        <div class="section-header">
-            <h4 style="color:#ff6b6b;">❌ Invalid Cards</h4>
-            <button class="copy-all-btn" onclick="copyInvalid()" style="background:linear-gradient(135deg,#ff6b6b,#ee5a24);">📋 Copy All Invalid</button>
+        <textarea id="binInput" placeholder="Paste BINs or card numbers here..."></textarea>
+
+        <div class="file-upload-area">
+            <span class="file-info" id="fileInfoBin">No file selected</span>
+            <span class="file-info" id="lineCountBin">Lines: 0</span>
+            <button class="btn btn-danger" onclick="clearBin()" style="padding:8px 18px;margin:0;">🗑️ Clear</button>
         </div>
-        <div id="invalidOutput" class="result"></div>
+
+        <div class="btn-group">
+            <button class="btn btn-primary" onclick="processBin()">🔍 Filter BINs</button>
+            <button class="btn btn-success" onclick="copyAllBin()">📋 Copy All</button>
+            <button class="btn btn-warning" onclick="downloadAllBin()">⬇️ Download All</button>
+        </div>
+
+        <div class="filter-tabs">
+            <button class="all active" onclick="filterBIN('all')">📊 All</button>
+            <button class="amex" onclick="filterBIN('amex')">💳 Amex</button>
+            <button class="visa" onclick="filterBIN('visa')">💳 Visa</button>
+            <button class="master" onclick="filterBIN('master')">💳 Master</button>
+            <button class="discover" onclick="filterBIN('discover')">💳 Discover</button>
+            <button class="jcb" onclick="filterBIN('jcb')">💳 JCB</button>
+        </div>
+
+        <div class="download-section">
+            <button class="btn btn-amex" onclick="downloadType('amex')">⬇️ Amex</button>
+            <button class="btn btn-visa" onclick="downloadType('visa')">⬇️ Visa</button>
+            <button class="btn btn-master" onclick="downloadType('master')">⬇️ Master</button>
+            <button class="btn btn-discover" onclick="downloadType('discover')">⬇️ Discover</button>
+            <button class="btn btn-jcb" onclick="downloadType('jcb')">⬇️ JCB</button>
+        </div>
+
+        <div class="status-bar">
+            <div id="counterBin" style="text-align:right;padding:8px 18px;background:rgba(13,13,13,0.8);border-radius:25px;border:1px solid rgba(26,26,26,0.5);font-size:13px;color:#888;">
+                Total: <span id="totalCountBin">0</span> | Valid: <span id="validCountBin">0</span> | Invalid: <span id="invalidCountBin" style="color:#ff6b6b;">0</span>
+            </div>
+        </div>
+
+        <div id="outputSectionBin" style="display:none;">
+            <div class="section-header">
+                <h4 id="outputTitleBin" style="color:#00ff88;">✅ All BINs</h4>
+                <button class="copy-all-btn" onclick="copyFilteredBin()">📋 Copy All</button>
+            </div>
+            <div id="outputBin" class="result"></div>
+        </div>
     </div>
 </div>
 
@@ -708,95 +635,16 @@
         🔥 Developed By THIS PERSON IS BRAND
     </div>
     <div class="footer-details">
-        <span>📌 <span class="highlight">Card Filter</span> — Smart Extract MM | YY | CVV</span>
-        <span>🔍 <span class="highlight">Luhn Validation</span> — Auto Verify Cards</span>
+        <span>📌 <span class="highlight">Card Filter</span> — Extract MM | YY | CVV</span>
+        <span>🔍 <span class="highlight">BIN Filter</span> — Detect Card Type</span>
         <span>📁 <span class="highlight">File Upload</span> — TXT / XLSX Support</span>
-        <span>⚡ <span class="highlight">Card Generator</span> — 2026-2099 (Dropdown) • Random 2026-2034</span>
         <span>📋 <span class="highlight">Copy & Download</span> — One Click Export</span>
-        <span>🎨 <span class="highlight">Drag & Drop</span> — Easy File Management</span>
-    </div>
-</div>
-
-<!-- GENERATOR POPUP - BIGGER -->
-<div class="popup" id="popup">
-    <div class="popup-box">
-        <h2>⚡ CARD GENERATOR <span class="test-card-badge">TEST CARDS</span></h2>
-        <p class="subtitle">Premium Generator • Luhn Valid • Amex Support (15 digit + 4 digit CVV) • Dropdown: 2026-2099 • Random: 2026-2034</p>
-
-        <div class="generator-layout">
-            <div class="generator-left">
-                <label>🔢 BIN (6+ digits) <span style="color:#888;font-weight:normal;font-size:11px;">— or click a preset</span></label>
-                <div class="bin-preset">
-                    <button onclick="setBIN('400895')">Visa (400895)</button>
-                    <button onclick="setBIN('517805')">Master (517805)</button>
-                    <button onclick="setBIN('371654')">Amex (371654)</button>
-                    <button onclick="setBIN('601100')">Discover (601100)</button>
-                    <button onclick="setBIN('358930')">JCB (358930)</button>
-                    <button onclick="setBIN('422222')">Visa (422222)</button>
-                    <button onclick="setBIN('340000')">Amex (340000)</button>
-                </div>
-                <input id="bin" placeholder="e.g. 517805 or 400895" style="font-family:'Courier New',monospace;">
-
-                <div style="display:flex;gap:15px;flex-wrap:wrap;">
-                    <div style="flex:1;min-width:120px;">
-                        <label>📅 Month</label>
-                        <select id="month"></select>
-                    </div>
-                    <div style="flex:1;min-width:120px;">
-                        <label>📅 Year <span style="color:#888;font-weight:normal;font-size:10px;">(2026-2099)</span></label>
-                        <select id="year"></select>
-                    </div>
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="randomMonth"> 
-                    <label for="randomMonth">🎲 Random Month</label>
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="randomYear"> 
-                    <label for="randomYear">🎲 Random Year <span style="color:#888;font-size:10px;">(2026-2034 only)</span></label>
-                </div>
-
-                <div class="cvv-option">
-                    <label>CVV Length:</label>
-                    <label><input type="radio" name="cvvLen" value="3" checked> 3 Digit</label>
-                    <label><input type="radio" name="cvvLen" value="4"> 4 Digit (Amex)</label>
-                </div>
-
-                <div class="year-limit-info">✅ Dropdown: 2026-2099 | Random: 2026-2034 (max validity)</div>
-
-                <label>📊 Quantity</label>
-                <input id="qty" value="10" type="number" min="1" max="1000">
-
-                <button class="btn" onclick="generate()" style="background:linear-gradient(135deg,#ff00cc,#00ffff);width:100%;padding:14px;font-size:16px;margin:10px 0;">🎲 Generate Test Cards</button>
-                
-                <button class="btn btn-danger" onclick="closePopup()" style="width:100%;padding:12px;">❌ Close</button>
-            </div>
-
-            <div class="generator-right">
-                <label>📋 Generated Output <span style="color:#888;font-weight:normal;font-size:12px;">(All cards are Luhn Valid - Test Cards)</span></label>
-                <div class="gen-output-container" id="genOutputContainer">
-                    <div id="genOutputList"></div>
-                </div>
-                <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;">
-                    <button class="btn btn-success" onclick="copyGen()" style="flex:1;">📋 Copy All</button>
-                    <button class="btn btn-primary" onclick="downloadGen()" style="flex:1;">⬇️ Download TXT</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="popup-footer">
-            <div style="color:#666;font-size:12px;cursor:pointer;" onclick="window.open('https://t.me/thispersonisbrand537','_blank')">
-                🔥 Developed By THIS PERSON IS BRAND
-            </div>
-        </div>
     </div>
 </div>
 
 <script>
     // ============================================================
-    // COMPLETE JAVASCRIPT - TEST CARD GENERATOR 
-    // Dropdown: 2026-2099 | Random: 2026-2034
+    // COMPLETE JAVASCRIPT - CARD FILTER + BIN FILTER
     // ============================================================
 
     // ---- Toast Notification ----
@@ -827,31 +675,6 @@
         }
     })();
 
-    // ---- populate month/year (Year: 2026-2099) ----
-    (function() {
-        const monthSel = document.getElementById('month');
-        for (let i = 1; i <= 12; i++) {
-            let val = i.toString().padStart(2, '0');
-            monthSel.innerHTML += `<option value="${val}">${val}</option>`;
-        }
-        const yearSel = document.getElementById('year');
-        for (let i = 26; i <= 99; i++) {
-            yearSel.innerHTML += `<option value="${i}">20${i}</option>`;
-        }
-    })();
-
-    // ---- Set BIN Preset ----
-    function setBIN(bin) {
-        document.getElementById('bin').value = bin;
-        if (bin.startsWith('37') || bin.startsWith('34')) {
-            document.querySelector('input[name="cvvLen"][value="4"]').checked = true;
-            showToast('✅ BIN set to ' + bin + ' (Amex - 4 digit CVV)');
-        } else {
-            document.querySelector('input[name="cvvLen"][value="3"]').checked = true;
-            showToast('✅ BIN set to ' + bin);
-        }
-    }
-
     // ---- Luhn Check ----
     function luhnCheck(num) {
         let arr = num.split('').reverse().map(x => parseInt(x));
@@ -862,45 +685,72 @@
         return sum % 10 === 0;
     }
 
-    let finalCards = [];
-    let invalidCardsList = [];
-    let generatedCards = [];
+    // ---- Detect Card Type from BIN ----
+    function detectCardType(bin) {
+        const b = bin.toString();
+        if (b.match(/^3[47]/)) return 'amex';
+        if (b.match(/^4/)) return 'visa';
+        if (b.match(/^5[1-5]/)) return 'master';
+        if (b.match(/^6(?:011|5|4[4-9]|22)/)) return 'discover';
+        if (b.match(/^35(?:2[89]|[3-8][0-9])/)) return 'jcb';
+        return 'unknown';
+    }
 
-    // ================ DRAG & DROP ================
-    const dropArea = document.getElementById('dropArea');
-    const fileInput = document.getElementById('fileInput');
+    function getTypeName(type) {
+        const names = { 'amex': 'Amex', 'visa': 'Visa', 'master': 'Mastercard', 'discover': 'Discover', 'jcb': 'JCB', 'unknown': 'Unknown' };
+        return names[type] || 'Unknown';
+    }
 
-    if (dropArea && fileInput) {
-        dropArea.addEventListener('dragover', function(e) {
-            e.preventDefault();
-            this.classList.add('dragover');
-        });
-        dropArea.addEventListener('dragleave', function(e) {
+    function getTypeColor(type) {
+        const colors = { 'amex': '#006fcf', 'visa': '#1a1f71', 'master': '#eb001b', 'discover': '#ff6000', 'jcb': '#1a8a3f', 'unknown': '#666' };
+        return colors[type] || '#666';
+    }
+
+    function getBadgeClass(type) { return 'badge-' + type; }
+
+    // ============================================================
+    // SWITCH MODE
+    // ============================================================
+    function switchMode(mode) {
+        document.querySelectorAll('.mode-tabs button').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.mode-content').forEach(el => el.classList.remove('active'));
+        
+        if (mode === 'card') {
+            document.querySelector('.mode-tabs button:first-child').classList.add('active');
+            document.getElementById('cardMode').classList.add('active');
+        } else {
+            document.querySelector('.mode-tabs button:last-child').classList.add('active');
+            document.getElementById('binMode').classList.add('active');
+        }
+    }
+
+    // ============================================================
+    // CARD FILTER
+    // ============================================================
+    let cardValid = [];
+    let cardInvalid = [];
+
+    // ---- Card File Upload ----
+    const dropAreaCard = document.getElementById('dropAreaCard');
+    const fileInputCard = document.getElementById('fileInputCard');
+
+    if (dropAreaCard && fileInputCard) {
+        dropAreaCard.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+        dropAreaCard.addEventListener('dragleave', function(e) { e.preventDefault(); this.classList.remove('dragover'); });
+        dropAreaCard.addEventListener('drop', function(e) {
             e.preventDefault();
             this.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) handleCardFile(e.dataTransfer.files[0]);
         });
-        dropArea.addEventListener('drop', function(e) {
-            e.preventDefault();
-            this.classList.remove('dragover');
-            const files = e.dataTransfer.files;
-            if (files.length > 0) {
-                handleFile(files[0]);
-            }
-        });
-        dropArea.addEventListener('click', function() {
-            fileInput.click();
-        });
-        fileInput.addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                handleFile(e.target.files[0]);
-            }
+        dropAreaCard.addEventListener('click', function() { fileInputCard.click(); });
+        fileInputCard.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) handleCardFile(e.target.files[0]);
         });
     }
 
-    function handleFile(file) {
-        document.getElementById('fileInfo').textContent = '📄 ' + file.name;
+    function handleCardFile(file) {
+        document.getElementById('fileInfoCard').textContent = '📄 ' + file.name;
         const reader = new FileReader();
-        
         if (file.name.endsWith('.xlsx')) {
             reader.onload = function(e) {
                 try {
@@ -918,10 +768,10 @@
                                 }
                             }
                         });
-                        document.getElementById('input').value = lines.join('\n');
-                        document.getElementById('lineCount').textContent = 'Lines: ' + lines.length;
+                        document.getElementById('cardInput').value = lines.join('\n');
+                        document.getElementById('lineCountCard').textContent = 'Lines: ' + lines.length;
                         showToast('✅ File loaded: ' + lines.length + ' lines');
-                        process();
+                        processCard();
                     } else {
                         showToast('⚠️ No card numbers found in file');
                     }
@@ -933,82 +783,65 @@
         } else {
             reader.onload = function(e) {
                 const content = e.target.result;
-                document.getElementById('input').value = content;
+                document.getElementById('cardInput').value = content;
                 const lines = content.split('\n').filter(l => l.trim()).length;
-                document.getElementById('lineCount').textContent = 'Lines: ' + lines;
+                document.getElementById('lineCountCard').textContent = 'Lines: ' + lines;
                 showToast('✅ File loaded: ' + lines + ' lines');
-                process();
+                processCard();
             };
             reader.readAsText(file);
         }
     }
 
-    // ================ CLEAR ================
-    function clearInput() {
-        document.getElementById('input').value = '';
-        document.getElementById('output').innerHTML = '';
+    function clearCard() {
+        document.getElementById('cardInput').value = '';
+        document.getElementById('validOutput').innerHTML = '';
         document.getElementById('invalidOutput').innerHTML = '';
         document.getElementById('validSection').style.display = 'none';
         document.getElementById('invalidSection').style.display = 'none';
-        document.getElementById('totalCount').textContent = '0';
-        document.getElementById('validCount').textContent = '0';
-        document.getElementById('invalidCount').textContent = '0';
-        document.getElementById('fileInfo').textContent = 'No file selected';
-        document.getElementById('lineCount').textContent = 'Lines: 0';
-        finalCards = [];
-        invalidCardsList = [];
-        showToast('🗑️ Cleared successfully!');
+        document.getElementById('totalCountCard').textContent = '0';
+        document.getElementById('validCountCard').textContent = '0';
+        document.getElementById('invalidCountCard').textContent = '0';
+        document.getElementById('fileInfoCard').textContent = 'No file selected';
+        document.getElementById('lineCountCard').textContent = 'Lines: 0';
+        cardValid = [];
+        cardInvalid = [];
+        showToast('🗑️ Cleared!');
     }
 
-    // ================ PROCESS ================
-    function process() {
-        const raw = document.getElementById("input").value;
+    function processCard() {
+        const raw = document.getElementById('cardInput').value;
         if (!raw.trim()) {
-            document.getElementById("output").innerHTML = '<div style="color:#ff6b6b;padding:20px;text-align:center;font-size:16px;">⚠️ Please paste some card details first!</div>';
+            showToast('⚠️ Please paste some card details first!');
             return;
         }
         
         const lines = raw.split(/\r?\n/);
-        const output = document.getElementById("output");
-        const invalidOutput = document.getElementById("invalidOutput");
-        output.innerHTML = "";
-        invalidOutput.innerHTML = "";
+        const validOut = document.getElementById('validOutput');
+        const invalidOut = document.getElementById('invalidOutput');
+        validOut.innerHTML = '';
+        invalidOut.innerHTML = '';
         document.getElementById('validSection').style.display = 'none';
         document.getElementById('invalidSection').style.display = 'none';
-        finalCards = [];
-        invalidCardsList = [];
-        let totalBlocks = 0;
-        let validCount = 0;
-        let invalidCount = 0;
+        cardValid = [];
+        cardInvalid = [];
+        let totalBlocks = 0, validCount = 0, invalidCount = 0;
 
-        let blocks = [];
-        let currentBlock = [];
-        
+        let blocks = [], currentBlock = [];
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i].trim();
             if (line === '') {
-                if (currentBlock.length > 0) {
-                    blocks.push(currentBlock);
-                    currentBlock = [];
-                }
+                if (currentBlock.length > 0) { blocks.push(currentBlock); currentBlock = []; }
                 continue;
             }
-            
             const nums = line.match(/\d+/g);
             let hasCard = false;
             if (nums) {
                 for (let n of nums) {
-                    if (n.length >= 13 && n.length <= 16) {
-                        hasCard = true;
-                        break;
-                    }
+                    if (n.length >= 13 && n.length <= 16) { hasCard = true; break; }
                 }
             }
-            
-            if (hasCard && currentBlock.length > 0) {
-                blocks.push(currentBlock);
-                currentBlock = [];
-            }
+            if (hasCard && currentBlock.length > 0) { blocks.push(currentBlock); currentBlock = []; }
             currentBlock.push(line);
         }
         if (currentBlock.length > 0) blocks.push(currentBlock);
@@ -1023,13 +856,12 @@
                 if (nums) allNums = allNums.concat(nums);
             });
             if (allNums.length === 0) {
-                invalidCardsList.push({raw: block.join(' '), reason: 'No numbers found'});
+                cardInvalid.push({raw: block.join(' '), reason: 'No numbers found'});
                 invalidCount++;
                 return;
             }
             
-            let card = null;
-            let cardIndex = -1;
+            let card = null, cardIndex = -1;
             for (let i = 0; i < allNums.length; i++) {
                 if (allNums[i].length >= 13 && allNums[i].length <= 16) {
                     card = allNums[i];
@@ -1038,7 +870,7 @@
                 }
             }
             if (!card) {
-                invalidCardsList.push({raw: block.join(' '), reason: 'No card number (13-16 digits)'});
+                cardInvalid.push({raw: block.join(' '), reason: 'No card number (13-16 digits)'});
                 invalidCount++;
                 return;
             }
@@ -1087,264 +919,310 @@
             const formatted = `${card}|${mm}|${yy}|${cvv}`;
             
             if (!luhnCheck(card)) {
-                invalidCardsList.push({raw: formatted, reason: 'Luhn check failed'});
+                cardInvalid.push({raw: formatted, reason: 'Luhn failed'});
                 invalidCount++;
-                
-                const div = document.createElement("div");
-                div.className = "card card-invalid";
-                div.innerHTML = `
-                    <span>${formatted} ⚠️ Invalid Luhn</span>
-                    <button class="copy" onclick="copyText('${formatted.replace(/'/g, "\\'")}')">📋 Copy</button>
-                `;
-                invalidOutput.appendChild(div);
+                const div = document.createElement('div');
+                div.className = 'card card-invalid';
+                div.innerHTML = `<span>${formatted} ⚠️ Invalid Luhn</span><button class="copy" onclick="copyText('${formatted.replace(/'/g, "\\'")}')">📋 Copy</button>`;
+                invalidOut.appendChild(div);
                 document.getElementById('invalidSection').style.display = 'block';
                 return;
             }
             
-            finalCards.push(formatted);
+            cardValid.push(formatted);
             validCount++;
-            
-            const div = document.createElement("div");
-            div.className = "card";
-            div.innerHTML = `
-                <span>${formatted}</span>
-                <button class="copy" onclick="copyText('${formatted.replace(/'/g, "\\'")}')">📋 Copy</button>
-            `;
-            output.appendChild(div);
+            const div = document.createElement('div');
+            div.className = 'card';
+            div.innerHTML = `<span>${formatted}</span><button class="copy" onclick="copyText('${formatted.replace(/'/g, "\\'")}')">📋 Copy</button>`;
+            validOut.appendChild(div);
             document.getElementById('validSection').style.display = 'block';
         });
 
-        finalCards = [...new Set(finalCards)];
-        validCount = finalCards.length;
-
-        if (invalidCardsList.length > 0) {
-            document.getElementById('invalidSection').style.display = 'block';
-        }
-
-        document.getElementById("totalCount").textContent = totalBlocks;
-        document.getElementById("validCount").textContent = validCount;
-        document.getElementById("invalidCount").textContent = invalidCount;
-        document.getElementById('lineCount').textContent = 'Lines: ' + totalBlocks;
+        cardValid = [...new Set(cardValid)];
+        validCount = cardValid.length;
+        document.getElementById('totalCountCard').textContent = totalBlocks;
+        document.getElementById('validCountCard').textContent = validCount;
+        document.getElementById('invalidCountCard').textContent = invalidCount;
+        document.getElementById('lineCountCard').textContent = 'Lines: ' + totalBlocks;
     }
 
-    // ---- COPY ----
-    function copyText(t) { 
-        navigator.clipboard.writeText(t).then(() => {
-            showToast('✅ Copied Successfully!');
-        }).catch(() => {});
+    function copyText(t) {
+        navigator.clipboard.writeText(t).then(() => showToast('✅ Copied!')).catch(() => {});
     }
-    
-    function copyAll() { 
-        if (!finalCards.length && !invalidCardsList.length) {
-            showToast('⚠️ No cards to copy!');
-            return;
-        }
-        let all = [...finalCards];
-        if (invalidCardsList.length) {
-            all.push('--- INVALID ---');
-            invalidCardsList.forEach(c => all.push(c.raw));
-        }
-        navigator.clipboard.writeText(all.join("\n")).then(() => {
-            showToast('✅ All Cards Copied Successfully!');
-        }).catch(() => {});
+
+    function copyAllCard() {
+        if (!cardValid.length && !cardInvalid.length) { showToast('⚠️ No cards to copy!'); return; }
+        let all = [...cardValid];
+        if (cardInvalid.length) { all.push('--- INVALID ---'); cardInvalid.forEach(c => all.push(c.raw)); }
+        navigator.clipboard.writeText(all.join('\n')).then(() => showToast('✅ All copied!')).catch(() => {});
     }
 
     function copyValid() {
-        if (!finalCards.length) {
-            showToast('⚠️ No valid cards to copy!');
-            return;
-        }
-        navigator.clipboard.writeText(finalCards.join("\n")).then(() => {
-            showToast('✅ Valid Cards Copied!');
-        }).catch(() => {});
+        if (!cardValid.length) { showToast('⚠️ No valid cards!'); return; }
+        navigator.clipboard.writeText(cardValid.join('\n')).then(() => showToast('✅ Valid cards copied!')).catch(() => {});
     }
 
     function copyInvalid() {
-        if (!invalidCardsList.length) {
-            showToast('⚠️ No invalid cards to copy!');
-            return;
-        }
-        const data = invalidCardsList.map(c => c.raw);
-        navigator.clipboard.writeText(data.join("\n")).then(() => {
-            showToast('✅ Invalid Cards Copied!');
-        }).catch(() => {});
+        if (!cardInvalid.length) { showToast('⚠️ No invalid cards!'); return; }
+        const data = cardInvalid.map(c => c.raw);
+        navigator.clipboard.writeText(data.join('\n')).then(() => showToast('✅ Invalid cards copied!')).catch(() => {});
     }
 
-    function downloadTXT() {
-        if (!finalCards.length && !invalidCardsList.length) {
-            showToast('⚠️ No cards to download!');
-            return;
-        }
-        let all = [...finalCards];
-        if (invalidCardsList.length) {
-            all.push('--- INVALID ---');
-            invalidCardsList.forEach(c => all.push(c.raw));
-        }
-        const blob = new Blob([all.join("\n")], { type: "text/plain" });
-        const a = document.createElement("a");
+    function downloadCard() {
+        if (!cardValid.length && !cardInvalid.length) { showToast('⚠️ No cards to download!'); return; }
+        let all = [...cardValid];
+        if (cardInvalid.length) { all.push('--- INVALID ---'); cardInvalid.forEach(c => all.push(c.raw)); }
+        const blob = new Blob([all.join('\n')], { type: 'text/plain' });
+        const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = "cards.txt";
+        a.download = 'cards.txt';
         a.click();
         URL.revokeObjectURL(a.href);
-        showToast('✅ Downloaded Successfully!');
+        showToast('✅ Downloaded!');
     }
 
-    // ---- GENERATOR ----
-    function openPopup() { document.getElementById("popup").style.display = "flex"; }
-    function closePopup() { document.getElementById("popup").style.display = "none"; }
+    // ============================================================
+    // BIN FILTER
+    // ============================================================
+    let allBins = [];
+    let filteredBins = [];
 
-    function generate() {
-        let bin = document.getElementById("bin").value.trim();
-        let qty = parseInt(document.getElementById("qty").value) || 10;
-        
-        bin = bin.replace(/\D/g, '').slice(0, 16);
-        if (!bin || bin.length < 6) { 
-            showToast('⚠️ Enter at least 6 digit BIN');
-            return; 
-        }
-        if (qty < 1) qty = 1;
-        if (qty > 1000) qty = 1000;
-        
-        const randomMonth = document.getElementById("randomMonth").checked;
-        const randomYear = document.getElementById("randomYear").checked;
-        const monthSel = document.getElementById("month");
-        const yearSel = document.getElementById("year");
-        
-        const cvvLen = parseInt(document.querySelector('input[name="cvvLen"]:checked').value);
-        const isAmex = bin.startsWith('37') || bin.startsWith('34');
-        const cardLength = isAmex ? 15 : 16;
+    // ---- Bin File Upload ----
+    const dropAreaBin = document.getElementById('dropAreaBin');
+    const fileInputBin = document.getElementById('fileInputBin');
 
-        const result = [];
-        let attempts = 0;
-        const maxAttempts = qty * 30;
+    if (dropAreaBin && fileInputBin) {
+        dropAreaBin.addEventListener('dragover', function(e) { e.preventDefault(); this.classList.add('dragover'); });
+        dropAreaBin.addEventListener('dragleave', function(e) { e.preventDefault(); this.classList.remove('dragover'); });
+        dropAreaBin.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            if (e.dataTransfer.files.length > 0) handleBinFile(e.dataTransfer.files[0]);
+        });
+        dropAreaBin.addEventListener('click', function() { fileInputBin.click(); });
+        fileInputBin.addEventListener('change', function(e) {
+            if (e.target.files.length > 0) handleBinFile(e.target.files[0]);
+        });
+    }
 
-        while (result.length < qty && attempts < maxAttempts) {
-            attempts++;
-            
-            let mm, yy;
-            if (randomMonth) {
-                mm = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
-            } else {
-                mm = monthSel.value;
-            }
-            
-            if (randomYear) {
-                // Random Year: 2026-2034 only (26-34)
-                let yearNum = Math.floor(Math.random() * 9) + 26;
-                yy = String(yearNum);
-            } else {
-                // Dropdown Year: 2026-2099 (26-99)
-                yy = yearSel.value.slice(-2);
-            }
-            
-            if (parseInt(yy) < 26) yy = '26';
-            if (parseInt(yy) > 99) yy = '99';
-            
-            let prefix = bin;
-            let remaining = cardLength - prefix.length;
-            if (remaining < 1) remaining = 1;
-            
-            let rand = "";
-            for (let i = 0; i < remaining - 1; i++) {
-                rand += Math.floor(Math.random() * 10);
-            }
-            
-            let partial = prefix + rand;
-            for (let i = 0; i < 10; i++) {
-                let candidate = partial + i;
-                if (luhnCheck(candidate)) {
-                    let cvv;
-                    if (cvvLen === 4) {
-                        cvv = String(Math.floor(1000 + Math.random() * 9000));
+    function handleBinFile(file) {
+        document.getElementById('fileInfoBin').textContent = '📄 ' + file.name;
+        const reader = new FileReader();
+        if (file.name.endsWith('.xlsx')) {
+            reader.onload = function(e) {
+                try {
+                    const content = new TextDecoder('utf-8').decode(e.target.result);
+                    const nums = content.match(/\d+/g);
+                    if (nums) {
+                        let lines = [];
+                        let line = [];
+                        nums.forEach((num, idx) => {
+                            if (num.length >= 6) {
+                                line.push(num);
+                                if (line.length >= 4 || idx === nums.length - 1) {
+                                    lines.push(line.join(' '));
+                                    line = [];
+                                }
+                            }
+                        });
+                        document.getElementById('binInput').value = lines.join('\n');
+                        document.getElementById('lineCountBin').textContent = 'Lines: ' + lines.length;
+                        showToast('✅ File loaded: ' + lines.length + ' lines');
+                        processBin();
                     } else {
-                        cvv = String(Math.floor(100 + Math.random() * 900));
+                        showToast('⚠️ No card numbers found in file');
                     }
-                    result.push(`${candidate}|${mm}|${yy}|${cvv}`);
-                    break;
+                } catch(err) {
+                    showToast('⚠️ Could not parse file');
                 }
-            }
-        }
-
-        generatedCards = result;
-        const container = document.getElementById('genOutputList');
-        container.innerHTML = '';
-
-        if (result.length === 0) {
-            container.innerHTML = '<div style="color:#ff6b6b;padding:20px;text-align:center;">⚠️ Could not generate valid cards. Try a different BIN.</div>';
-            showToast('⚠️ Could not generate valid cards');
+            };
+            reader.readAsArrayBuffer(file);
         } else {
-            result.forEach(card => {
-                const div = document.createElement('div');
-                div.className = 'gen-card-item';
-                div.innerHTML = `
-                    <span>${card}</span>
-                    <button class="copy-small" onclick="copyGenCard('${card.replace(/'/g, "\\'")}')">📋 Copy</button>
-                `;
-                container.appendChild(div);
+            reader.onload = function(e) {
+                const content = e.target.result;
+                document.getElementById('binInput').value = content;
+                const lines = content.split('\n').filter(l => l.trim()).length;
+                document.getElementById('lineCountBin').textContent = 'Lines: ' + lines;
+                showToast('✅ File loaded: ' + lines + ' lines');
+                processBin();
+            };
+            reader.readAsText(file);
+        }
+    }
+
+    function clearBin() {
+        document.getElementById('binInput').value = '';
+        document.getElementById('outputBin').innerHTML = '';
+        document.getElementById('outputSectionBin').style.display = 'none';
+        document.getElementById('totalCountBin').textContent = '0';
+        document.getElementById('validCountBin').textContent = '0';
+        document.getElementById('invalidCountBin').textContent = '0';
+        document.getElementById('fileInfoBin').textContent = 'No file selected';
+        document.getElementById('lineCountBin').textContent = 'Lines: 0';
+        allBins = [];
+        filteredBins = [];
+        showToast('🗑️ Cleared!');
+    }
+
+    function processBin() {
+        const raw = document.getElementById('binInput').value;
+        if (!raw.trim()) {
+            showToast('⚠️ Please paste some BINs or card numbers first!');
+            return;
+        }
+        
+        const lines = raw.split(/\r?\n/);
+        const output = document.getElementById('outputBin');
+        output.innerHTML = '';
+        document.getElementById('outputSectionBin').style.display = 'block';
+        document.getElementById('outputTitleBin').textContent = '✅ All BINs';
+        
+        allBins = [];
+        let totalCount = 0, validCount = 0, invalidCount = 0;
+
+        lines.forEach(line => {
+            const nums = line.match(/\d+/g);
+            if (!nums) return;
+            nums.forEach(num => {
+                if (num.length >= 6 && num.length <= 16) {
+                    totalCount++;
+                    const type = detectCardType(num);
+                    const isValid = luhnCheck(num);
+                    if (isValid) validCount++;
+                    else invalidCount++;
+                    allBins.push({ bin: num, type: type, typeName: getTypeName(type), valid: isValid });
+                }
             });
-            const cardType = isAmex ? 'Amex (15 digit)' : 'Standard (16 digit)';
-            const yearType = randomYear ? 'Random (2026-2034)' : 'Dropdown (2026-2099)';
-            showToast(`✅ ${result.length} ${cardType} Test Cards Generated! (${yearType})`);
-        }
+        });
+
+        document.getElementById('totalCountBin').textContent = totalCount;
+        document.getElementById('validCountBin').textContent = validCount;
+        document.getElementById('invalidCountBin').textContent = invalidCount;
+        document.getElementById('lineCountBin').textContent = 'Lines: ' + lines.length;
+
+        displayBinTable(allBins);
+        filteredBins = allBins;
     }
 
-    function copyGenCard(card) {
-        navigator.clipboard.writeText(card).then(() => {
-            showToast('✅ Card Copied!');
-        }).catch(() => {
-            const textArea = document.createElement('textarea');
-            textArea.value = card;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            showToast('✅ Card Copied!');
+    function displayBinTable(cards) {
+        const output = document.getElementById('outputBin');
+        output.innerHTML = '';
+        if (cards.length === 0) {
+            output.innerHTML = '<div style="color:#888;padding:20px;text-align:center;">No cards found</div>';
+            return;
+        }
+
+        const grouped = {};
+        cards.forEach(card => {
+            if (!grouped[card.type]) grouped[card.type] = [];
+            grouped[card.type].push(card);
+        });
+
+        const typeOrder = ['amex', 'visa', 'master', 'discover', 'jcb', 'unknown'];
+        typeOrder.forEach(type => {
+            if (grouped[type] && grouped[type].length > 0) {
+                const color = getTypeColor(type);
+                const header = document.createElement('div');
+                header.style.cssText = `color:${color};font-weight:bold;font-size:15px;margin:15px 0 8px 0;padding:6px 14px;background:rgba(255,255,255,0.03);border-radius:8px;border-left:4px solid ${color};display:flex;justify-content:space-between;align-items:center;`;
+                const vc = grouped[type].filter(c => c.valid).length;
+                const ic = grouped[type].filter(c => !c.valid).length;
+                header.innerHTML = `<span>💳 ${getTypeName(type)} (${grouped[type].length})</span><span style="font-size:12px;color:#888;">✅ ${vc} | ❌ ${ic} <button class="copy-small" onclick="copyBinType('${type}')" style="margin-left:10px;">📋 Copy All</button></span>`;
+                output.appendChild(header);
+
+                const table = document.createElement('table');
+                table.className = 'bin-table';
+                const thead = document.createElement('thead');
+                thead.innerHTML = `<tr><th style="width:60%;">BIN / Card Number</th><th style="width:20%;">Type</th><th style="width:10%;">Status</th><th style="width:10%;">Action</th></tr>`;
+                table.appendChild(thead);
+                const tbody = document.createElement('tbody');
+                grouped[type].forEach(card => {
+                    const tr = document.createElement('tr');
+                    tr.className = card.type;
+                    tr.innerHTML = `<td><span style="font-family:monospace;font-weight:bold;">${card.bin}</span></td>
+                        <td><span class="badge ${getBadgeClass(card.type)}">${card.typeName}</span></td>
+                        <td><span class="badge ${card.valid ? 'badge-valid' : 'badge-invalid'}">${card.valid ? '✅ Valid' : '❌ Invalid'}</span></td>
+                        <td><button class="copy-small" onclick="copyText('${card.bin}')">📋 Copy</button></td>`;
+                    tbody.appendChild(tr);
+                });
+                table.appendChild(tbody);
+                output.appendChild(table);
+            }
         });
     }
 
-    function copyGen() {
-        if (!generatedCards.length) {
-            showToast('⚠️ No cards to copy!');
-            return;
+    function filterBIN(type) {
+        document.querySelectorAll('#binMode .filter-tabs button').forEach(btn => btn.classList.remove('active'));
+        document.querySelector(`#binMode .filter-tabs button.${type}`).classList.add('active');
+        if (type === 'all') {
+            filteredBins = allBins;
+            document.getElementById('outputTitleBin').textContent = '✅ All BINs';
+        } else {
+            filteredBins = allBins.filter(c => c.type === type);
+            document.getElementById('outputTitleBin').textContent = `✅ ${getTypeName(type)} BINs (${filteredBins.length})`;
         }
-        const text = generatedCards.join("\n");
-        navigator.clipboard.writeText(text).then(() => {
-            showToast('✅ All Generated Cards Copied!');
-        }).catch(() => {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textArea);
-            showToast('✅ All Generated Cards Copied!');
-        });
+        displayBinTable(filteredBins);
     }
 
-    function downloadGen() {
-        if (!generatedCards.length) {
-            showToast('⚠️ No cards to download!');
-            return;
-        }
-        const blob = new Blob([generatedCards.join("\n")], { type: "text/plain" });
-        const a = document.createElement("a");
+    function copyAllBin() {
+        if (!allBins.length) { showToast('⚠️ No cards to copy!'); return; }
+        const text = allBins.map(c => c.bin).join('\n');
+        navigator.clipboard.writeText(text).then(() => showToast('✅ All copied!')).catch(() => {});
+    }
+
+    function copyFilteredBin() {
+        if (!filteredBins.length) { showToast('⚠️ No cards to copy!'); return; }
+        const text = filteredBins.map(c => c.bin).join('\n');
+        navigator.clipboard.writeText(text).then(() => showToast('✅ All copied!')).catch(() => {});
+    }
+
+    function copyBinType(type) {
+        const cards = allBins.filter(c => c.type === type);
+        if (!cards.length) { showToast(`⚠️ No ${getTypeName(type)} cards!`); return; }
+        const text = cards.map(c => c.bin).join('\n');
+        navigator.clipboard.writeText(text).then(() => showToast(`✅ ${getTypeName(type)} copied!`)).catch(() => {});
+    }
+
+    function downloadAllBin() {
+        if (!allBins.length) { showToast('⚠️ No cards to download!'); return; }
+        // Group by type
+        const grouped = {};
+        allBins.forEach(c => {
+            if (!grouped[c.type]) grouped[c.type] = [];
+            grouped[c.type].push(c.bin);
+        });
+        
+        let outputText = '';
+        const typeOrder = ['amex', 'visa', 'master', 'discover', 'jcb', 'unknown'];
+        typeOrder.forEach(type => {
+            if (grouped[type] && grouped[type].length > 0) {
+                outputText += `=== ${getTypeName(type)} (${grouped[type].length}) ===\n`;
+                outputText += grouped[type].join('\n') + '\n\n';
+            }
+        });
+        
+        const blob = new Blob([outputText], { type: 'text/plain' });
+        const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
-        a.download = "test_cards.txt";
+        a.download = 'all_bins_grouped.txt';
         a.click();
         URL.revokeObjectURL(a.href);
-        showToast('✅ Downloaded Successfully!');
+        showToast('✅ Downloaded with type groups!');
     }
 
-    // ---- Close popup on ESC & click outside ----
-    document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') closePopup();
-    });
-    document.getElementById("popup").addEventListener('click', function(e) {
-        if (e.target === this) closePopup();
-    });
+    function downloadType(type) {
+        const cards = allBins.filter(c => c.type === type);
+        if (!cards.length) { showToast(`⚠️ No ${getTypeName(type)} cards found!`); return; }
+        const text = cards.map(c => c.bin).join('\n');
+        const blob = new Blob([text], { type: 'text/plain' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = `${type}_bins.txt`;
+        a.click();
+        URL.revokeObjectURL(a.href);
+        showToast(`✅ ${getTypeName(type)} downloaded!`);
+    }
 
-    console.log('🔥 THIS PERSON IS BRAND - Test Card Generator Loaded');
-    console.log('📌 Dropdown: 2026-2099 | Random: 2026-2034');
+    console.log('🔥 THIS PERSON IS BRAND - Card Filter & BIN Filter Loaded');
 </script>
 
 </body>
